@@ -16,7 +16,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-RUN mkdir -p /tmp \
-    && chmod 777 /tmp
+RUN groupadd -g 1000 www && \
+    useradd -u 1000 -g www -s /bin/sh -m www
 
-RUN chmod -R 777 /var/www
+RUN chown -R www:www /var/www
+RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache

@@ -15,18 +15,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-950">
-            <div>
-                <a href="/">
-                    <span class="text-2xl font-bold tracking-tight text-white">
-                        Clyrion <span class="text-blue-500">Studio</span>
-                    </span>
-                </a>
-            </div>
+        <div class="min-h-screen bg-gray-100">
+            @include('layouts.navigation')
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-gray-900 border border-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            <!-- Page Heading -->
+            @isset($header)
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
+
+            <!-- Page Content -->
+            <main>
                 {{ $slot }}
-            </div>
+            </main>
         </div>
     </body>
 </html>
