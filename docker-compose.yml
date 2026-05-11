@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: clyrion_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "5173:5173"
+    networks:
+      - clyrion_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: clyrion_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - clyrion_network
+
+  postgres:
+    image: postgres:16
+    container_name: clyrion_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: clyrion_db
+      POSTGRES_USER: clyrion_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - clyrion_network
+
+networks:
+  clyrion_network:
+
+volumes:
+  postgres_data:
