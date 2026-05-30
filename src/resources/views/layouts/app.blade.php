@@ -10,15 +10,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-950 text-white min-h-screen font-sans antialiased">
+<body>
 
-    <div class="min-h-screen bg-gray-950">
+    <div class="min-h-screen bg-surface">
 
         @include('layouts.navigation')
 
         @isset($header)
-            <header class="border-b border-gray-800">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header class="border-b border-surface-border">
+                <div class="container-page py-6">
                     {{ $header }}
                 </div>
             </header>
@@ -28,8 +28,8 @@
             {{ $slot }}
         </main>
 
-        <footer class="border-t border-gray-800 py-6 text-center text-sm text-gray-500">
-            &copy; {{ date('Y') }} <span class="text-blue-400">Clyrion Studio</span> | JIMMY
+        <footer class="border-t border-surface-border py-6 text-center text-sm text-gray-500">
+            &copy; {{ date('Y') }} <span class="text-brand-400">Clyrion Studio</span> | JIMMY
         </footer>
 
     </div>

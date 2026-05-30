@@ -2,17 +2,21 @@
 
 @section('title', 'Clyrion Studio | JIMMY — Software Engineer & Fullstack Developer')
 
+@section('meta')
+    <x-meta-tags title="Clyrion Studio | JIMMY" description="Software Engineer & Fullstack Developer especializado en arquitecturas backend, automatización de procesos y soluciones empresariales escalables." />
+@endsection
+
 @section('content')
 
 {{-- Hero --}}
-<section class="py-32">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-blue-400 mb-4 uppercase tracking-widest text-sm font-medium">
+<section class="section-padding">
+    <div class="container-page text-center animate-fade-in">
+        <p class="text-brand-400 mb-4 uppercase tracking-widest text-sm font-medium">
             Software Engineer &bull; Fullstack Developer
         </p>
-        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight mb-6 text-white">
             Building scalable
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">
+            <span class="gradient-text">
                 digital solutions
             </span>
         </h1>
@@ -22,11 +26,11 @@
         </p>
         <div class="mt-10 flex justify-center gap-4">
             <a href="#proyectos"
-               class="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition">
+               class="px-8 py-4 bg-brand-600 hover:bg-brand-700 rounded-xl font-medium transition">
                 Ver proyectos
             </a>
             <a href="#contacto"
-               class="px-8 py-4 border border-gray-700 hover:border-blue-500 rounded-xl transition">
+               class="px-8 py-4 border border-surface-border hover:border-brand-500 rounded-xl transition">
                 Contactar
             </a>
         </div>
@@ -34,9 +38,9 @@
 </section>
 
 {{-- Services --}}
-<section id="servicios" class="py-24 bg-gray-900/50">
-    <div class="max-w-7xl mx-auto px-6">
-        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">Servicios</h2>
+<section id="servicios" class="section-padding bg-surface-card/50">
+    <div class="container-page">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4 text-white">Servicios</h2>
         <p class="text-gray-400 text-center mb-16 max-w-2xl mx-auto">
             Soluciones enterprise de principio a fin
         </p>
@@ -52,8 +56,8 @@
                 ];
             @endphp
             @foreach ($services as $service)
-                <div class="p-6 rounded-xl border border-gray-800 bg-gray-950 hover:border-blue-500/50 transition group">
-                    <h3 class="text-lg font-semibold mb-2 group-hover:text-blue-400 transition">{{ $service['title'] }}</h3>
+                <div class="card-hover p-6">
+                    <h3 class="text-lg font-semibold mb-2 text-white group-hover:text-brand-400 transition">{{ $service['title'] }}</h3>
                     <p class="text-gray-400 text-sm">{{ $service['desc'] }}</p>
                 </div>
             @endforeach
@@ -61,19 +65,68 @@
     </div>
 </section>
 
-{{-- CTA --}}
-<section class="py-24">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-6">
-            ¿Listo para construir algo <span class="text-blue-500">grande</span>?
-        </h2>
-        <p class="text-gray-400 mb-8 text-lg">
-            Hablemos sobre tu próximo proyecto.
+{{-- Projects --}}
+<section id="proyectos" class="section-padding">
+    <div class="container-page">
+        <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4 text-white">Proyectos destacados</h2>
+        <p class="text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+            Soluciones enterprise que he construido
         </p>
-        <a href="#contacto"
-           class="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition">
-            Contáctame
-        </a>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @php
+                $featured = [
+                    ['title' => 'Sistema de Trazabilidad', 'desc' => 'Plataforma enterprise para gestión y trazabilidad de procesos industriales.', 'tech' => 'Laravel, PostgreSQL, Docker'],
+                    ['title' => 'Automatización de Desinfección', 'desc' => 'Sistema automatizado con IoT para control de desinfección en plantas.', 'tech' => 'PHP, IoT, PostgreSQL'],
+                    ['title' => 'Plataforma Educativa', 'desc' => 'LMS moderno con tutorías, cursos y seguimiento de estudiantes.', 'tech' => 'Laravel, Livewire, TailwindCSS'],
+                ];
+            @endphp
+            @foreach ($featured as $project)
+                <div class="card-hover p-6 flex flex-col group">
+                    <div class="w-10 h-10 rounded-lg bg-brand-500/10 flex items-center justify-center mb-4 text-brand-400 font-bold text-lg">
+                        {{ $loop->iteration }}
+                    </div>
+                    <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-brand-400 transition">{{ $project['title'] }}</h3>
+                    <p class="text-gray-400 text-sm flex-1">{{ $project['desc'] }}</p>
+                    <div class="mt-4 pt-4 border-t border-surface-border">
+                        <span class="text-xs text-gray-500">{{ $project['tech'] }}</span>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="text-center mt-12">
+            <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-2 text-brand-400 hover:text-brand-300 transition font-medium">
+                Ver todos los proyectos
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+{{-- Contact --}}
+<section id="contacto" class="section-padding bg-surface-card/50">
+    <div class="container-page max-w-2xl text-center">
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">Contacto</h2>
+        <p class="text-gray-400 mb-12">
+            ¿Tienes un proyecto en mente? Hablemos.
+        </p>
+        <div class="card p-8 text-left">
+            <form action="#" method="POST" class="space-y-6">
+                @csrf
+                <div>
+                    <x-input-label for="name" :value="__('Nombre')" />
+                    <x-text-input id="name" class="block mt-1 w-full" type="text" required />
+                </div>
+                <div>
+                    <x-input-label for="email" :value="__('Email')" />
+                    <x-text-input id="email" class="block mt-1 w-full" type="email" required />
+                </div>
+                <div>
+                    <x-input-label for="message" :value="__('Mensaje')" />
+                    <textarea id="message" rows="4" class="block mt-1 w-full border-surface-input bg-surface-card text-gray-200 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm" required></textarea>
+                </div>
+                <x-primary-button class="w-full justify-center">Enviar mensaje</x-primary-button>
+            </form>
+        </div>
     </div>
 </section>
 
