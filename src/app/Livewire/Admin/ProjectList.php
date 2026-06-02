@@ -3,32 +3,39 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Project;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Livewire\Traits\WithListPagination;
 
-class ProjectList extends Component
+/**
+ * Livewire Component: ProjectList
+ *
+ * Lista paginada de proyectos con búsqueda y filtro
+ * por estado (draft/published).
+ */
+class ProjectList extends AdminComponent
 {
-    use WithPagination;
+    use WithListPagination;
 
-    public $search = '';
-    public $status = '';
+    protected int $perPage = 10;
 
-    protected $queryString = ['search', 'status'];
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'status' => ['except' => ''],
+    ];
 
-    public function delete(Project $project)
+    public function delete(Project $project): void
     {
         $project->delete();
+        $this->flashSuccess('Proyecto eliminado correctamente.');
     }
 
-    public function render()
+    protected function view(): \Illuminate\Contracts\View\View
     {
         return view('livewire.admin.project-list', [
-            'projects' => Project::query()
-                ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
-                ->when($this->status, fn($q) => $q->where('status', $this->status))
+            'projects' => $this->applySearch(Project::query(), ['title'])
+                ->tap(fn($q) => $this->applyStatusFilter($q))
                 ->orderBy('sort_order')
                 ->orderByDesc('created_at')
-                ->paginate(10),
-        ])->layout('layouts.app');
+                ->paginate($this->perPage),
+        ]);
     }
 }

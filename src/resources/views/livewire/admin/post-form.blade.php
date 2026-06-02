@@ -35,7 +35,7 @@
 
             <div>
                 <x-input-label for="content" value="Contenido" />
-                <textarea wire:model="content" id="content" rows="15" class="w-full mt-1 border-surface-input bg-surface-card text-gray-200 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm text-sm font-mono"></textarea>
+                <x-trix-editor wire:model="content" id="content" placeholder="Escribe el contenido aquí..." />
                 <x-input-error :messages="$errors->get('content')" class="mt-1" />
             </div>
 
@@ -87,9 +87,4 @@
         </div>
     </form>
 
-    @if (session('message'))
-        <div class="fixed bottom-6 right-6 px-6 py-3 bg-green-600 text-white rounded-lg shadow-lg text-sm">
-            {{ session('message') }}
-        </div>
-    @endif
 </div>

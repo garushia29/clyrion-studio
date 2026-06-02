@@ -3,28 +3,33 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Post;
-use Livewire\Component;
+use App\Livewire\Traits\WithSlugGeneration;
 use Illuminate\Support\Str;
 
-class PostForm extends Component
+/**
+ * Livewire Component: PostForm
+ *
+ * Formulario de creación y edición de posts del blog.
+ * Soporta tags como string, categoría, imagen destacada y meta SEO.
+ */
+class PostForm extends AdminComponent
 {
+    use WithSlugGeneration;
+
     public ?Post $post = null;
 
-    public $title = '';
-    public $slug = '';
-    public $excerpt = '';
-    public $content = '';
-    public $category = '';
-    public $tags = '';
-    public $status = 'draft';
-    public $featured_image = '';
-    public $meta_title = '';
-    public $meta_description = '';
+    public string $title = '';
+    public string $slug = '';
+    public string $excerpt = '';
+    public string $content = '';
+    public string $category = '';
+    public string $tags = '';
+    public string $status = 'draft';
+    public string $featured_image = '';
+    public string $meta_title = '';
+    public string $meta_description = '';
 
-    public $showSlugEditor = false;
-    public $autoSlug = true;
-
-    public function mount(?Post $post = null)
+    public function mount(?Post $post = null): void
     {
         if ($post?->exists) {
             $this->post = $post;
@@ -42,28 +47,18 @@ class PostForm extends Component
         }
     }
 
-    public function updatedTitle($value)
+    public function updatedTitle(string $value): void
     {
-        if ($this->autoSlug) {
-            $this->slug = Str::slug($value);
-        }
+        $this->updatedTitleAutoSlug($value);
     }
 
-    public function toggleSlugEditor()
-    {
-        $this->showSlugEditor = !$this->showSlugEditor;
-        if ($this->showSlugEditor) {
-            $this->autoSlug = false;
-        }
-    }
-
-    public function save()
+    public function save(): void
     {
         $this->validate();
 
         $data = [
             'title' => $this->title,
-            'slug' => $this->slug ?: Str::slug($this->title),
+            'slug' => $this->resolveSlug($this->title, $this->slug),
             'excerpt' => $this->excerpt,
             'content' => $this->content,
             'category' => $this->category,
@@ -77,19 +72,19 @@ class PostForm extends Component
 
         if ($this->post?->exists) {
             $this->post->update($data);
-            session()->flash('message', 'Post actualizado correctamente.');
+            $this->flashSuccess('Post actualizado correctamente.');
         } else {
             $data['user_id'] = auth()->id();
             Post::create($data);
-            session()->flash('message', 'Post creado correctamente.');
+            $this->flashSuccess('Post creado correctamente.');
         }
 
         $this->redirect(route('admin.posts.index'), navigate: true);
     }
 
-    protected function rules()
+    protected function rules(): array
     {
-        $rules = [
+        return [
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
             'excerpt' => 'nullable|string|max:500',
@@ -101,12 +96,10 @@ class PostForm extends Component
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
         ];
-
-        return $rules;
     }
 
-    public function render()
+    protected function view(): \Illuminate\Contracts\View\View
     {
-        return view('livewire.admin.post-form')->layout('layouts.app');
+        return view('livewire.admin.post-form');
     }
 }

@@ -3,31 +3,37 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Project;
-use Livewire\Component;
+use App\Livewire\Traits\WithSlugGeneration;
 use Illuminate\Support\Str;
 
-class ProjectForm extends Component
+/**
+ * Livewire Component: ProjectForm
+ *
+ * Formulario de creación y edición de proyectos del portafolio.
+ * Soporta tecnologías como string separado por comas, año,
+ * enlaces y meta SEO.
+ */
+class ProjectForm extends AdminComponent
 {
+    use WithSlugGeneration;
+
     public ?Project $project = null;
 
-    public $title = '';
-    public $slug = '';
-    public $description = '';
-    public $content = '';
-    public $technologies = '';
-    public $year = '';
-    public $url = '';
-    public $github_url = '';
-    public $status = 'draft';
-    public $featured = false;
-    public $sort_order = 0;
-    public $meta_title = '';
-    public $meta_description = '';
+    public string $title = '';
+    public string $slug = '';
+    public string $description = '';
+    public string $content = '';
+    public string $technologies = '';
+    public string $year = '';
+    public string $url = '';
+    public string $github_url = '';
+    public string $status = 'draft';
+    public bool $featured = false;
+    public int $sort_order = 0;
+    public string $meta_title = '';
+    public string $meta_description = '';
 
-    public $showSlugEditor = false;
-    public $autoSlug = true;
-
-    public function mount(?Project $project = null)
+    public function mount(?Project $project = null): void
     {
         if ($project?->exists) {
             $this->project = $project;
@@ -36,7 +42,7 @@ class ProjectForm extends Component
             $this->description = $project->description;
             $this->content = $project->content;
             $this->technologies = $project->technologies ? implode(', ', $project->technologies) : '';
-            $this->year = $project->year;
+            $this->year = (string) $project->year;
             $this->url = $project->url;
             $this->github_url = $project->github_url;
             $this->status = $project->status;
@@ -48,28 +54,18 @@ class ProjectForm extends Component
         }
     }
 
-    public function updatedTitle($value)
+    public function updatedTitle(string $value): void
     {
-        if ($this->autoSlug) {
-            $this->slug = Str::slug($value);
-        }
+        $this->updatedTitleAutoSlug($value);
     }
 
-    public function toggleSlugEditor()
-    {
-        $this->showSlugEditor = !$this->showSlugEditor;
-        if ($this->showSlugEditor) {
-            $this->autoSlug = false;
-        }
-    }
-
-    public function save()
+    public function save(): void
     {
         $this->validate();
 
         $data = [
             'title' => $this->title,
-            'slug' => $this->slug ?: Str::slug($this->title),
+            'slug' => $this->resolveSlug($this->title, $this->slug),
             'description' => $this->description,
             'content' => $this->content,
             'technologies' => $this->technologies ? array_map('trim', explode(',', $this->technologies)) : [],
@@ -78,23 +74,23 @@ class ProjectForm extends Component
             'github_url' => $this->github_url,
             'status' => $this->status,
             'featured' => $this->featured,
-            'sort_order' => (int) $this->sort_order,
+            'sort_order' => $this->sort_order,
             'meta_title' => $this->meta_title ?: $this->title,
             'meta_description' => $this->meta_description ?: $this->description,
         ];
 
         if ($this->project?->exists) {
             $this->project->update($data);
-            session()->flash('message', 'Proyecto actualizado correctamente.');
+            $this->flashSuccess('Proyecto actualizado correctamente.');
         } else {
             Project::create($data);
-            session()->flash('message', 'Proyecto creado correctamente.');
+            $this->flashSuccess('Proyecto creado correctamente.');
         }
 
         $this->redirect(route('admin.projects.index'), navigate: true);
     }
 
-    protected function rules()
+    protected function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
@@ -113,8 +109,8 @@ class ProjectForm extends Component
         ];
     }
 
-    public function render()
+    protected function view(): \Illuminate\Contracts\View\View
     {
-        return view('livewire.admin.project-form')->layout('layouts.app');
+        return view('livewire.admin.project-form');
     }
 }

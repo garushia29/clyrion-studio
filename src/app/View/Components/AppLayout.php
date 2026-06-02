@@ -5,6 +5,11 @@ namespace App\View\Components;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
+/**
+ * Component: AppLayout
+ *
+ * Layout principal del panel de administración autenticado.
+ */
 class AppLayout extends Component
 {
     /**

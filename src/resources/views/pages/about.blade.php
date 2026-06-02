@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Sobre mí | Clyrion Studio | JIMMY')
+@section('title', __('about.title') . ' | Clyrion Studio | JIMMY')
 
 @section('content')
 
@@ -15,8 +15,7 @@
                     <h1 class="text-3xl font-bold text-white mb-2">JIMMY</h1>
                     <p class="text-brand-400 font-medium mb-4">Software Engineer & Fullstack Developer</p>
                     <p class="text-gray-400 text-sm leading-relaxed mb-6">
-                        Especializado en arquitecturas backend, automatización de procesos
-                        y soluciones empresariales escalables.
+                        {{ __('about.bio') }}
                     </p>
                     <div class="flex flex-wrap gap-3 justify-center lg:justify-start">
                         <span class="px-3 py-1 text-xs rounded-full bg-surface-card border border-surface-border text-gray-300">Laravel</span>
@@ -30,15 +29,7 @@
             </div>
             <div class="lg:col-span-3 space-y-8">
                 <div>
-                    <h2 class="text-2xl font-bold text-white mb-4">Trayectoria</h2>
-                    <p class="text-gray-400 leading-relaxed">
-                        Desarrollador fullstack con enfoque en sistemas enterprise, automatización
-                        y arquitecturas limpias. Experiencia construyendo plataformas SaaS,
-                        sistemas de trazabilidad, y soluciones de infraestructura digital.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="text-2xl font-bold text-white mb-4">Enfoque</h2>
+                    <h2 class="text-2xl font-bold text-white mb-4">{{ __('about.approach_title') }}</h2>
                     <div class="space-y-4">
                         @php
                             $approaches = [
@@ -60,7 +51,7 @@
                     </div>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-bold text-white mb-4">Stack Principal</h2>
+                    <h2 class="text-2xl font-bold text-white mb-4">{{ __('about.stack_title') }}</h2>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         @php
                             $stack = [

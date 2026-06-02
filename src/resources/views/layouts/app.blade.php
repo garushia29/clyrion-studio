@@ -7,12 +7,16 @@
 
     <title>{{ config('app.name', 'Clyrion Studio | JIMMY') }}</title>
 
+    <style>[x-cloak] { display: none !important; }</style>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
 
     <div class="min-h-screen bg-surface">
+
+        <livewire:components.flash-message />
 
         @include('layouts.navigation')
 

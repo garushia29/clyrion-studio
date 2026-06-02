@@ -1,0 +1,5 @@
+﻿PHPUnit 12.5.24 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.3.31
+Configuration: /var/www/phpunit.xml
+

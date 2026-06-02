@@ -1,0 +1,62 @@
+<div>
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-white">Mensajes de contacto</h2>
+    </div>
+
+    <div class="flex gap-4 mb-6">
+        <x-text-input wire:model.live="search" placeholder="Buscar mensajes..." class="w-64" />
+        <select wire:model.live="filter" class="border-surface-input bg-surface-card text-gray-200 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm text-sm">
+            <option value="">Todos</option>
+            <option value="unread">No leídos</option>
+            <option value="read">Leídos</option>
+        </select>
+    </div>
+
+    <div class="card overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-surface-card border-b border-surface-border">
+                <tr>
+                    <th class="text-left py-3 px-4 text-gray-400 font-medium">Nombre</th>
+                    <th class="text-left py-3 px-4 text-gray-400 font-medium">Email</th>
+                    <th class="text-left py-3 px-4 text-gray-400 font-medium">Mensaje</th>
+                    <th class="text-left py-3 px-4 text-gray-400 font-medium">Estado</th>
+                    <th class="text-left py-3 px-4 text-gray-400 font-medium">Fecha</th>
+                    <th class="text-right py-3 px-4 text-gray-400 font-medium">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-surface-border">
+                @forelse ($messages as $message)
+                    <tr class="hover:bg-surface-hover transition {{ !$message->read ? 'bg-brand-500/5' : '' }}">
+                        <td class="py-3 px-4 text-white font-medium">{{ $message->name }}</td>
+                        <td class="py-3 px-4 text-gray-400">
+                            <a href="mailto:{{ $message->email }}" class="hover:text-brand-400 transition">{{ $message->email }}</a>
+                        </td>
+                        <td class="py-3 px-4 text-gray-400 max-w-xs truncate">{{ $message->message }}</td>
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 text-xs rounded-full {{ $message->read ? 'bg-gray-500/10 text-gray-400' : 'bg-brand-500/10 text-brand-400' }}">
+                                {{ $message->read ? 'Leído' : 'Nuevo' }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-gray-400 text-sm">{{ $message->created_at->diffForHumans() }}</td>
+                        <td class="py-3 px-4 text-right">
+                            @if (!$message->read)
+                                <button wire:click="markAsRead({{ $message->id }})" class="text-brand-400 hover:text-brand-300 transition text-sm mr-2">Marcar leído</button>
+                            @else
+                                <button wire:click="markAsUnread({{ $message->id }})" class="text-gray-400 hover:text-white transition text-sm mr-2">No leído</button>
+                            @endif
+                            <button wire:click="delete({{ $message->id }})" wire:confirm="¿Eliminar este mensaje?" class="text-red-400 hover:text-red-300 transition text-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="py-12 text-center text-gray-500">No hay mensajes</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-6">
+        {{ $messages->links() }}
+    </div>
+</div>

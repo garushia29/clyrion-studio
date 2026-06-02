@@ -3,31 +3,38 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Post;
-use Livewire\Component;
-use Livewire\WithPagination;
+use App\Livewire\Traits\WithListPagination;
 
-class PostList extends Component
+/**
+ * Livewire Component: PostList
+ *
+ * Lista paginada de posts con búsqueda y filtro
+ * por estado (draft/published).
+ */
+class PostList extends AdminComponent
 {
-    use WithPagination;
+    use WithListPagination;
 
-    public $search = '';
-    public $status = '';
+    protected int $perPage = 10;
 
-    protected $queryString = ['search', 'status'];
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'status' => ['except' => ''],
+    ];
 
-    public function delete(Post $post)
+    public function delete(Post $post): void
     {
         $post->delete();
+        $this->flashSuccess('Post eliminado correctamente.');
     }
 
-    public function render()
+    protected function view(): \Illuminate\Contracts\View\View
     {
         return view('livewire.admin.post-list', [
-            'posts' => Post::query()
-                ->when($this->search, fn($q) => $q->where('title', 'like', "%{$this->search}%"))
-                ->when($this->status, fn($q) => $q->where('status', $this->status))
+            'posts' => $this->applySearch(Post::query(), ['title'])
+                ->tap(fn($q) => $this->applyStatusFilter($q))
                 ->orderByDesc('created_at')
-                ->paginate(10),
-        ])->layout('layouts.app');
+                ->paginate($this->perPage),
+        ]);
     }
 }

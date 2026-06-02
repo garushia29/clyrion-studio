@@ -3,7 +3,7 @@
     @foreach ($urls as $url)
     <url>
         <loc>{{ $url['loc'] }}</loc>
-        <lastmod>{{ now()->toDateString() }}</lastmod>
+        <lastmod>{{ $url['lastmod'] ?? now()->toDateString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>{{ $url['priority'] }}</priority>
     </url>
