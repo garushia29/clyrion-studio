@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Jimmy Garcia Vallejos',
             'email' => 'garushia29@gmail.com',
             'password' => bcrypt('garushia'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
         ]);
     }
 }
