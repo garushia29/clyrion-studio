@@ -45,7 +45,6 @@
             {{ __('home.services_subtitle') }}
         </p>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            @php $services = \App\Models\Service::active()->orderBy('sort_order')->get(); @endphp
             @forelse ($services as $service)
                 <div class="card-hover p-6">
                     <h3 class="text-lg font-semibold mb-2 text-white group-hover:text-brand-400 transition">{{ $service->title }}</h3>

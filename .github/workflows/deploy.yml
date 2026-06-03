@@ -1,0 +1,85 @@
+name: Deploy Clyrion Studio
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: clyrion_test
+          POSTGRES_USER: clyrion
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: pdo, pdo_pgsql
+          tools: composer
+
+      - name: Copy environment
+        working-directory: ./src
+        run: cp .env.example .env
+
+      - name: Install dependencies
+        working-directory: ./src
+        run: composer install --no-interaction --no-progress
+
+      - name: Generate key
+        working-directory: ./src
+        run: php artisan key:generate
+
+      - name: Run tests
+        working-directory: ./src
+        env:
+          DB_CONNECTION: pgsql
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_DATABASE: clyrion_test
+          DB_USERNAME: clyrion
+          DB_PASSWORD: secret
+        run: php artisan test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy deploy files to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: ".,!.git,!.github,!src/node_modules,!src/vendor"
+          target: /var/www/clyrion-studio
+
+      - name: Execute deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/clyrion-studio
+            chmod +x deploy/deploy.sh
+            ./deploy/deploy.sh

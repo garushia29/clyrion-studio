@@ -92,7 +92,6 @@
             <aside class="lg:col-span-1 mt-10 lg:mt-0 space-y-8">
                 <div>
                     <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">{{ __('blog.categories') }}</h3>
-                    @php $allCategories = \App\Models\Category::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->get(); @endphp
                     @if ($allCategories->isNotEmpty())
                         <div class="space-y-2">
                             @foreach ($allCategories as $cat)
@@ -110,7 +109,6 @@
 
                 <div>
                     <h3 class="text-sm font-semibold text-white uppercase tracking-wider mb-4">{{ __('blog.popular_tags') }}</h3>
-                    @php $allTags = \App\Models\Tag::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->take(15)->get(); @endphp
                     @if ($allTags->isNotEmpty())
                         <div class="flex flex-wrap gap-2">
                             @foreach ($allTags as $t)

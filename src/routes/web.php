@@ -15,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 // Public pages
 Route::get('/', function () {
     $featured = \App\Models\Project::featured()->orderBy('sort_order')->take(3)->get();
-    return view('pages.home', compact('featured'));
+    $services = \App\Models\Service::active()->orderBy('sort_order')->get();
+    return view('pages.home', compact('featured', 'services'));
 })->name('home');
 Route::view('/about', 'pages.about')->name('about');
 

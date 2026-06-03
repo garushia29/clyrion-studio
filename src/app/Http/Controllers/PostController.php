@@ -18,7 +18,7 @@ class PostController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = Post::published();
+        $query = Post::published()->with('categories', 'tagsRelation');
 
         if ($search = $request->query('search')) {
             $query->where(function ($q) use ($search) {
@@ -34,12 +34,15 @@ class PostController extends Controller
             return response()->json($posts);
         }
 
-        return view('pages.blog', compact('posts'));
+        $allCategories = Category::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->get();
+        $allTags = Tag::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->take(15)->get();
+
+        return view('pages.blog', compact('posts', 'allCategories', 'allTags'));
     }
 
     public function show(string $slug): View
     {
-        $post = Post::published()->where('slug', $slug)->firstOrFail();
+        $post = Post::published()->with('categories', 'tagsRelation')->where('slug', $slug)->firstOrFail();
         $related = $post->relatedPosts();
 
         $categories = Category::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->get();
@@ -52,17 +55,23 @@ class PostController extends Controller
     public function category(string $slug): View
     {
         $category = Category::where('slug', $slug)->firstOrFail();
-        $posts = $category->posts()->published()->orderByDesc('published_at')->paginate(9);
+        $posts = $category->posts()->published()->with('categories', 'tagsRelation')->orderByDesc('published_at')->paginate(9);
 
-        return view('pages.blog', compact('posts', 'category'));
+        $allCategories = Category::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->get();
+        $allTags = Tag::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->take(15)->get();
+
+        return view('pages.blog', compact('posts', 'category', 'allCategories', 'allTags'));
     }
 
     public function tag(string $slug): View
     {
         $tag = Tag::where('slug', $slug)->firstOrFail();
-        $posts = $tag->posts()->published()->orderByDesc('published_at')->paginate(9);
+        $posts = $tag->posts()->published()->with('categories', 'tagsRelation')->orderByDesc('published_at')->paginate(9);
 
-        return view('pages.blog', compact('posts', 'tag'));
+        $allCategories = Category::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->get();
+        $allTags = Tag::whereHas('posts')->withCount('posts')->orderByDesc('posts_count')->take(15)->get();
+
+        return view('pages.blog', compact('posts', 'tag', 'allCategories', 'allTags'));
     }
 
     public function feed(): \Illuminate\Http\Response

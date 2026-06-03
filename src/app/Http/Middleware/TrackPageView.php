@@ -26,8 +26,11 @@ class TrackPageView
 
     public function handle(Request $request, Closure $next): Response
     {
-        $response = $next($request);
+        return $next($request);
+    }
 
+    public function terminate(Request $request, Response $response): void
+    {
         if ($this->shouldTrack($request)) {
             try {
                 PageView::create([
@@ -44,8 +47,6 @@ class TrackPageView
                 ]);
             }
         }
-
-        return $response;
     }
 
     private function shouldTrack(Request $request): bool

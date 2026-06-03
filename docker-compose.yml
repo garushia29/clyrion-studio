@@ -8,7 +8,30 @@ services:
     restart: unless-stopped
     working_dir: /var/www
     volumes:
-      - ./src:/var/www
+      # Source code directories (bind mount from Windows for live editing)
+      - ./src/app:/var/www/app
+      - ./src/bootstrap:/var/www/bootstrap
+      - ./src/config:/var/www/config
+      - ./src/database:/var/www/database
+      - ./src/lang:/var/www/lang
+      - ./src/public:/var/www/public
+      - ./src/resources:/var/www/resources
+      - ./src/routes:/var/www/routes
+      - ./src/storage:/var/www/storage
+      - ./src/tests:/var/www/tests
+      # Config & entrypoint files
+      - ./src/.env:/var/www/.env
+      - ./src/composer.json:/var/www/composer.json
+      - ./src/composer.lock:/var/www/composer.lock
+      - ./src/artisan:/var/www/artisan
+      - ./src/package.json:/var/www/package.json
+      - ./src/package-lock.json:/var/www/package-lock.json
+      - ./src/vite.config.js:/var/www/vite.config.js
+      - ./src/tailwind.config.js:/var/www/tailwind.config.js
+      - ./src/postcss.config.js:/var/www/postcss.config.js
+      - ./src/phpunit.xml:/var/www/phpunit.xml
+      # Named volume for vendor (fast container-native filesystem, NOT Windows bind mount)
+      - clyrion_vendor:/var/www/vendor
     ports:
       - "5173:5173"
     networks:
@@ -21,7 +44,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - ./src:/var/www
+      - ./src/public:/var/www/public
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
@@ -48,3 +71,4 @@ networks:
 
 volumes:
   postgres_data:
+  clyrion_vendor:

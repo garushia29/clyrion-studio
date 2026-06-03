@@ -7,6 +7,12 @@
 
     <title>{{ config('app.name', 'Clyrion Studio | JIMMY') }}</title>
 
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+
     <style>[x-cloak] { display: none !important; }</style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

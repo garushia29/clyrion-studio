@@ -7,10 +7,11 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev \
     libzip-dev \
+    libicu-dev \
     npm \
     nodejs
 
-RUN docker-php-ext-install pdo pdo_pgsql zip
+RUN docker-php-ext-install pdo pdo_pgsql zip intl
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -19,5 +20,7 @@ WORKDIR /var/www
 RUN groupadd -g 1000 www && \
     useradd -u 1000 -g www -s /bin/sh -m www
 
-RUN chown -R www:www /var/www
-RUN chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www:www /var/www && \
+    mkdir -p /var/log/php-fpm && \
+    chown www:www /var/log/php-fpm
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf

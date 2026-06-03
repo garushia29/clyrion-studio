@@ -1,0 +1,47 @@
+FROM php:8.3-fpm AS build
+
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip libpq-dev libzip-dev libicu-dev npm nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-install pdo pdo_pgsql zip intl
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+COPY src/composer.json src/composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+COPY src/package.json src/package-lock.json ./
+RUN npm ci --ignore-scripts && npm run build && rm -rf node_modules
+
+COPY src .
+
+RUN php artisan storage:link --force || true
+
+FROM php:8.3-fpm
+
+RUN apt-get update && apt-get install -y \
+    libpq-dev libzip-dev libicu-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-install pdo pdo_pgsql zip intl opcache
+
+COPY --from=build /var/www /var/www
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+RUN groupadd -g 1000 www && useradd -u 1000 -g www -s /bin/sh -m www
+
+RUN chown -R www:www /var/www && \
+    chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+USER www
+
+EXPOSE 9000
+
+CMD ["php-fpm"]

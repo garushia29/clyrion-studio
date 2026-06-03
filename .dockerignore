@@ -3,7 +3,7 @@
 node_modules
 vendor
 .env
-docker
+docker/nginx
 docker-compose.yml
 *.md
 .gitattributes

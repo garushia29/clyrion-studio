@@ -5,6 +5,22 @@
 @tailwind utilities;
 
 @layer base {
+    :root {
+        --color-surface: 255 255 255;
+        --color-surface-card: 249 250 251;
+        --color-surface-border: 229 231 235;
+        --color-surface-hover: 243 244 246;
+        --color-surface-input: 209 213 219;
+    }
+
+    .dark {
+        --color-surface: 3 7 18;
+        --color-surface-card: 17 24 39;
+        --color-surface-border: 31 41 55;
+        --color-surface-hover: 31 41 55;
+        --color-surface-input: 55 65 81;
+    }
+
     html {
         scroll-behavior: smooth;
     }
@@ -14,7 +30,55 @@
     }
 
     body {
-        @apply bg-surface text-gray-300 antialiased;
+        @apply bg-surface text-gray-700 dark:text-gray-300 antialiased transition-colors duration-300;
+    }
+
+    :root:not(.dark) .text-white {
+        color: #111827;
+    }
+
+    :root:not(.dark) .text-gray-200 {
+        color: #374151;
+    }
+
+    :root:not(.dark) .text-gray-300 {
+        color: #4b5563;
+    }
+
+    :root:not(.dark) .text-gray-400 {
+        color: #6b7280;
+    }
+
+    :root:not(.dark) .text-gray-500 {
+        color: #9ca3af;
+    }
+
+    :root:not(.dark) .text-gray-600 {
+        color: #b0b7c3;
+    }
+
+    .dark .text-white {
+        color: #fff;
+    }
+
+    .dark .text-gray-200 {
+        color: #e5e7eb;
+    }
+
+    .dark .text-gray-300 {
+        color: #d1d5db;
+    }
+
+    .dark .text-gray-400 {
+        color: #9ca3af;
+    }
+
+    .dark .text-gray-500 {
+        color: #6b7280;
+    }
+
+    .dark .text-gray-600 {
+        color: #4b5563;
     }
 }
 
