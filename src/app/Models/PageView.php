@@ -53,4 +53,31 @@ class PageView extends Model
             ->get()
             ->toArray();
     }
+
+    /**
+     * Obtiene visitas por día en un rango de fechas.
+     */
+    public static function viewsByDayRange(\Illuminate\Support\Carbon $start, \Illuminate\Support\Carbon $end): array
+    {
+        return self::whereBetween('created_at', [$start, $end])
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as visits')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * Obtiene las páginas más visitadas en un rango de fechas.
+     */
+    public static function topPagesByRange(int $limit, \Illuminate\Support\Carbon $start, \Illuminate\Support\Carbon $end): array
+    {
+        return self::whereBetween('created_at', [$start, $end])
+            ->selectRaw('path, COUNT(*) as visits')
+            ->groupBy('path')
+            ->orderByDesc('visits')
+            ->limit($limit)
+            ->get()
+            ->toArray();
+    }
 }

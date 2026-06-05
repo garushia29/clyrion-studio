@@ -16,10 +16,26 @@
     @hasSection('meta')
         @yield('meta')
     @else
-        <x-meta-tags />
+        <x-meta-tags :route="Route::currentRouteName()" />
     @endif
 
     <style>[x-cloak] { display: none !important; }</style>
+
+    {{-- hreflang for multilingual ES/EN --}}
+    @php $currentUrl = url()->current(); @endphp
+    <link rel="alternate" hreflang="es" href="{{ $currentUrl }}" />
+    <link rel="alternate" hreflang="en" href="{{ $currentUrl }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ $currentUrl }}" />
+
+    {{-- Default schemas: WebSite + Organization --}}
+    <x-schema-org type="WebSite" />
+    <x-schema-org type="Organization"
+        :name="config('app.name')"
+        url="/"
+        description="Software Engineer & Fullstack Developer especializado en arquitecturas backend, automatización de procesos y soluciones empresariales escalables." />
+    @hasSection('schema')
+        @yield('schema')
+    @endif
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

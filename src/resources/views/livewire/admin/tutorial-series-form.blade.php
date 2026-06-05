@@ -1,7 +1,7 @@
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white">{{ $series?->exists ? 'Editar serie' : 'Nueva serie' }}</h2>
-        <a href="{{ route('admin.tutorial-series.index') }}" class="px-4 py-2 bg-surface-card hover:bg-surface-hover rounded-lg text-sm font-medium transition text-gray-300">← Volver</a>
+        <a href="{{ route('admin.series.index') }}" class="px-4 py-2 bg-surface-card hover:bg-surface-hover rounded-lg text-sm font-medium transition text-gray-300">← Volver</a>
     </div>
 
     <form wire:submit="save" class="space-y-6 max-w-xl">
@@ -65,7 +65,7 @@
 
         <div class="flex gap-4">
             <x-primary-button>{{ $series?->exists ? 'Actualizar' : 'Crear serie' }}</x-primary-button>
-            <a href="{{ route('admin.tutorial-series.index') }}" class="px-4 py-2 bg-surface-card hover:bg-surface-hover rounded-lg text-sm font-medium transition text-gray-300">Cancelar</a>
+            <a href="{{ route('admin.series.index') }}" class="px-4 py-2 bg-surface-card hover:bg-surface-hover rounded-lg text-sm font-medium transition text-gray-300">Cancelar</a>
         </div>
     </form>
 </div>

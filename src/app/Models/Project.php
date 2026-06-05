@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'title',
@@ -26,6 +27,7 @@ class Project extends Model
         'url',
         'github_url',
         'featured',
+        'featured_image',
         'sort_order',
         'status',
         'meta_title',

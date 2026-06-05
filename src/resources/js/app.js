@@ -1,6 +1,9 @@
 import './bootstrap';
-
 import Trix from 'trix';
+import { lineChart, barChart } from './charts';
+
+window.lineChart = lineChart;
+window.barChart = barChart;
 
 document.addEventListener('trix-attachment-add', (event) => {
     const attachment = event.attachment;

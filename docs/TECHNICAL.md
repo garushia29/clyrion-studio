@@ -23,12 +23,13 @@
 13. [Módulo: Content Blocks](#13-módulo-content-blocks)
 14. [Módulo: Internacionalización](#14-módulo-internacionalización)
 15. [Módulo: Roles y Permisos](#15-módulo-roles-y-permisos)
-16. [Módulo: Middleware](#16-módulo-middleware)
-17. [Sistema de Diseño (UI/UX)](#17-sistema-de-diseño-uiux)
-18. [Dark/Light Mode](#18-darklight-mode)
-19. [Docker y DevOps](#19-docker-y-devops)
-20. [Pruebas](#20-pruebas)
-21. [Despliegue en Producción](#21-despliegue-en-producción)
+16. [Módulo: Notificaciones y Activity Log](#16-módulo-notificaciones-y-activity-log)
+17. [Módulo: Middleware](#17-módulo-middleware)
+18. [Sistema de Diseño (UI/UX)](#18-sistema-de-diseño-uiux)
+19. [Dark/Light Mode](#19-darklight-mode)
+20. [Docker y DevOps](#20-docker-y-devops)
+21. [Pruebas](#21-pruebas)
+22. [Despliegue en Producción](#22-despliegue-en-producción)
 
 ---
 
@@ -438,35 +439,115 @@ App\Models\Service::active()->orderBy('sort_order')->get()
 
 ## 15. Módulo: Roles y Permisos
 
-**Modelo User:** Campo `role` (string: 'admin' | 'user')  
-**Middleware:** `App\Http\Middleware\CheckRole`
+**Librería:** `spatie/laravel-permission` v8.0  
+**Modelo User:** Trait `HasRoles` + campo `role` (legacy)  
+**Middleware:** `App\Http\Middleware\CheckRole` (+ middleware Spatie `permission`, `role_or_permission`)
 
-### Niveles de Acceso
-- **admin**: Acceso completo al panel admin y CRUDs
-- **user**: Solo edición de perfil
+### Roles Disponibles
+| Rol | Permisos |
+|-----|----------|
+| **super-admin** | Todos los permisos (automático al admin por defecto) |
+| **admin** | Todos los permisos (asignable desde el panel) |
+| **user** | Sin permisos admin |
 
-### Protección de Rutas
-```php
-Route::middleware(['auth', 'role:admin'])->group(function () { ... });
-```
+### Permisos por Módulo
+| Módulo | Permisos |
+|--------|----------|
+| Posts | view, create, edit, delete |
+| Projects | view, create, edit, delete |
+| Tutorials | view, create, edit, delete |
+| Services | view, create, edit, delete |
+| Categories | view, create, edit, delete |
+| Tags | view, create, edit, delete |
+| Users | view, create, edit, delete |
+| Media | view, upload, delete |
+| Messages | view, delete |
+| Analytics | view |
+| SEO | view, edit |
+| Content Blocks | view, create, edit, delete |
+| Roles | view, create, edit, delete |
+| Permissions | view, create, edit, delete |
+
+### Componentes Admin
+| Componente | Ruta | Propósito |
+|------------|------|-----------|
+| `RoleList` | `/admin/roles` | Listado paginado de roles con conteo |
+| `RoleForm` | `/admin/roles/{create,edit}` | Formulario con checkboxes de permisos agrupados |
+| `PermissionList` | `/admin/permissions` | Listado paginado de permisos |
+| `PermissionForm` | `/admin/permissions/{create,edit}` | Crear/editar permiso individual |
+
+### User Management
+- `UserForm` incluye asignación de roles Spatie (checkboxes)
+- `UserList` muestra columna "Roles" con badges
+- `syncRoles()` en create/update
 
 ### Policies
-| Policy | Modelo | Acciones |
-|--------|--------|----------|
-| `PostPolicy` | Post | create, update, delete |
-| `ProjectPolicy` | Project | create, update, delete |
-| `ServicePolicy` | Service | create, update, delete |
-| `TutorialPolicy` | Tutorial | create, update, delete |
-| `UserPolicy` | User | create, update, delete |
+Todas migradas de `$user->isAdmin()` a `$user->hasPermissionTo()`:
+| Policy | Modelo |
+|--------|--------|
+| `PostPolicy` | Post |
+| `ProjectPolicy` | Project |
+| `ServicePolicy` | Service |
+| `TutorialPolicy` | Tutorial |
+| `UserPolicy` | User |
 
 ---
 
-## 16. Módulo: Middleware
+## 16. Módulo: Notificaciones y Activity Log
+
+### Notificaciones en Base de Datos
+**Tabla:** `notifications` (Laravel standard: UUID, type, notifiable morph, data JSON, read_at)  
+**Campanilla en vivo:** `NotificationBell` Livewire component en la top bar del admin
+
+#### Notificaciones Actuales
+| Evento | Canal | Notification Class |
+|--------|-------|-------------------|
+| Nuevo mensaje de contacto | mail + database | `ContactMessageNotification` |
+| Contenido creado/actualizado | database | `ModelActivityNotification` |
+
+#### Componentes
+| Componente | Ruta | Propósito |
+|------------|------|-----------|
+| `NotificationBell` | top bar | Badge con conteo + dropdown con últimas 10 no leídas, marcar como leída, "ver todas" |
+| `NotificationList` | `/admin/notifications` | Inbox completo con filtros (todas/no leídas/leídas), marcar todas, eliminar |
+
+### Activity Log
+**Tabla:** `activity_log` (id, user_id, log_type, model_type, model_id, description, properties JSON, ip_address)  
+**Modelo:** `App\Models\ActivityLog`
+
+#### Cómo Funciona
+1. **Trait `LogsActivity`** añadido a 11 modelos (Post, Project, Tutorial, Series, Service, Category, Tag, User, ContactMessage, Media, ContentBlock)
+2. Dispara evento `ModelActivity` en `created`/`updated`/`deleted`
+3. **Listener `LogModelActivity`** crea registro en `activity_log`
+4. **Listener `NotifyAdmins`** envía notificación database a admins (excepto deletes)
+
+#### Componente Admin
+| Componente | Ruta | Propósito |
+|------------|------|-----------|
+| `ActivityLogList` | `/admin/activity` | Listado paginado con filtros por tipo/modelo, búsqueda |
+
+### Arquitectura de Eventos
+```
+Model (via LogsActivity trait)
+  └─► ModelActivity event
+        ├─► LogModelActivity listener → activity_log table
+        └─► NotifyAdmins listener → notifications table (admins)
+```
+
+---
+
+## 17. Módulo: Middleware
 
 ### CheckRole (`app/Http/Middleware/CheckRole.php`)
-Protege rutas admin: verifica que el usuario autenticado tenga el rol requerido.
+Protege rutas admin: verifica que el usuario autenticado tenga el rol requerido (soporta columna `role` legacy + Spatie roles).
 
-### SetLocale (`app/Http/Middleware/SetLocale.php`)
+### Permission (`Spatie\Permission\Middleware\PermissionMiddleware`)
+Middleware de Spatie para proteger rutas por permiso específico.
+
+### RoleOrPermission (`Spatie\Permission\Middleware\RoleOrPermissionMiddleware`)
+Middleware de Spatie para proteger rutas por rol o permiso.
+
+### SetLocale (`App\Http\Middleware\SetLocale.php`)
 Configura el locale de la aplicación basado en la sesión del usuario.
 
 ### TrackPageView (`app/Http/Middleware/TrackPageView.php`)
@@ -474,7 +555,7 @@ Registra cada visita a páginas públicas en la tabla `page_views` para analytic
 
 ---
 
-## 17. Sistema de Diseño (UI/UX)
+## 18. Sistema de Diseño (UI/UX)
 
 ### Paleta de Colores
 
@@ -508,7 +589,7 @@ Registra cada visita a páginas públicas en la tabla `page_views` para analytic
 
 ---
 
-## 18. Dark/Light Mode
+## 19. Dark/Light Mode
 
 ### Implementación
 - Estrategia: `darkMode: 'class'` en TailwindCSS
@@ -539,7 +620,7 @@ Script inline en `<head>` que verifica:
 
 ---
 
-## 19. Docker y DevOps
+## 20. Docker y DevOps
 
 ### Entorno Local (`docker-compose.yml`)
 
@@ -566,7 +647,7 @@ Script inline en `<head>` que verifica:
 
 ---
 
-## 20. Pruebas
+## 21. Pruebas
 
 **Framework:** PHPUnit 12  
 **Archivos:** 20 tests
@@ -589,7 +670,7 @@ php artisan test
 
 ---
 
-## 21. Despliegue en Producción
+## 22. Despliegue en Producción
 
 ### Prerrequisitos
 - Servidor VPS con Docker y Docker Compose

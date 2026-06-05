@@ -30,7 +30,7 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-300 mb-1">Rol</label>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Rol (legacy)</label>
                 <select wire:model="role"
                         class="w-full bg-surface border border-surface-border rounded-lg px-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-brand-500">
                     <option value="user">Usuario</option>
@@ -38,6 +38,22 @@
                 </select>
                 @error('role') <p class="mt-1 text-xs text-red-400">{{ $message }}</p> @enderror
             </div>
+        </div>
+
+        <div class="bg-surface-card rounded-xl border border-surface-border p-6 space-y-5">
+            <h2 class="text-lg font-semibold text-white">Roles del sistema</h2>
+            <p class="text-sm text-gray-400">Asigna roles de Spatie a este usuario</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                @foreach ($roles as $role)
+                    <label class="flex items-center gap-2 px-3 py-2 rounded-lg border border-surface-border hover:bg-surface-hover cursor-pointer transition">
+                        <input type="checkbox" wire:model="selectedRoles" value="{{ $role->name }}"
+                               class="rounded border-surface-input bg-surface text-brand-500 focus:ring-brand-500">
+                        <span class="text-sm text-gray-300">{{ $role->name }}</span>
+                    </label>
+                @endforeach
+            </div>
+            @error('selectedRoles') <p class="mt-1 text-xs text-red-400">{{ $message }}</p> @enderror
         </div>
 
         <div class="bg-surface-card rounded-xl border border-surface-border p-6 space-y-5">

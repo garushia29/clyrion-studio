@@ -20,7 +20,7 @@ class FlashMessage extends Component
 
     protected $listeners = ['flash' => 'show'];
 
-    public function show(array $data): void
+    public function show($data): void
     {
         $this->type = $data['type'] ?? 'success';
         $this->message = $data['message'] ?? '';

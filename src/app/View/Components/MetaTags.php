@@ -5,14 +5,6 @@ namespace App\View\Components;
 use App\Models\SeoSettings;
 use Illuminate\View\Component;
 
-/**
- * Component: MetaTags
- *
- * Renderiza etiquetas SEO (title, description, Open Graph)
- * en el head de las páginas públicas. Si no se pasan valores
- * específicos, busca la configuración centralizada de SEO
- * para la ruta actual.
- */
 class MetaTags extends Component
 {
     public function __construct(
@@ -20,6 +12,18 @@ class MetaTags extends Component
         public string $description = '',
         public ?string $image = null,
         public string $type = 'website',
+        public ?string $articlePublished = null,
+        public ?string $articleModified = null,
+        public ?string $articleAuthor = null,
+        public ?string $articleTags = null,
+        public ?string $profileFirstName = null,
+        public ?string $profileLastName = null,
+        public ?string $profileUsername = null,
+        public ?string $twitterSite = null,
+        public ?string $twitterCreator = null,
+        public ?string $fbAppId = null,
+        public ?int $imageWidth = null,
+        public ?int $imageHeight = null,
     ) {
         $this->resolveFromSeoSettings();
     }

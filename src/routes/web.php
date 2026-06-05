@@ -10,6 +10,12 @@ use App\Livewire\Admin\CategoryForm;
 use App\Livewire\Admin\TagList;
 use App\Livewire\Admin\TagForm;
 use App\Livewire\Admin\ContentBlockManager;
+use App\Livewire\Admin\PermissionForm;
+use App\Livewire\Admin\PermissionList;
+use App\Livewire\Admin\RoleForm;
+use App\Livewire\Admin\RoleList;
+use App\Livewire\Admin\NotificationList;
+use App\Livewire\Admin\ActivityLogList;
 use Illuminate\Support\Facades\Route;
 
 // Public pages
@@ -40,43 +46,70 @@ Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/{slug}', [PostController::class, 'show'])->name('show');
 });
 
-// XML sitemap with all content types
+// Enhanced XML sitemap with image support, lastmod, and hreflang
 Route::get('/sitemap.xml', function () {
+    $latestPost = \App\Models\Post::published()->latest('updated_at')->value('updated_at');
+    $latestProject = \App\Models\Project::published()->latest('updated_at')->value('updated_at');
+    $latestTutorial = \App\Models\Tutorial::published()->latest('updated_at')->value('updated_at');
+    $latestContent = collect([$latestPost, $latestProject, $latestTutorial])->filter()->max();
+
     $urls = collect([
-        ['loc' => url('/'), 'priority' => '1.0'],
-        ['loc' => url('/about'), 'priority' => '0.9'],
-        ['loc' => url('/projects'), 'priority' => '0.8'],
-        ['loc' => url('/blog'), 'priority' => '0.7'],
-        ['loc' => url('/tutorials'), 'priority' => '0.7'],
-        ['loc' => url('/blog/feed.xml'), 'priority' => '0.3'],
+        ['loc' => url('/'), 'priority' => '1.0', 'changefreq' => 'weekly', 'lastmod' => $latestContent?->toDateString()],
+        ['loc' => url('/about'), 'priority' => '0.9', 'changefreq' => 'monthly'],
+        ['loc' => url('/projects'), 'priority' => '0.8', 'changefreq' => 'weekly', 'lastmod' => $latestProject?->toDateString()],
+        ['loc' => url('/blog'), 'priority' => '0.7', 'changefreq' => 'weekly', 'lastmod' => $latestPost?->toDateString()],
+        ['loc' => url('/tutorials'), 'priority' => '0.7', 'changefreq' => 'weekly', 'lastmod' => $latestTutorial?->toDateString()],
     ]);
 
-    $categories = \App\Models\Category::whereHas('posts', fn($q) => $q->published())->get();
+    $categories = \App\Models\Category::whereHas('posts', fn($q) => $q->published())->get(['slug', 'updated_at']);
     foreach ($categories as $cat) {
-        $urls->push(['loc' => route('blog.category', $cat->slug), 'priority' => '0.5']);
+        $urls->push(['loc' => route('blog.category', $cat->slug), 'priority' => '0.5', 'changefreq' => 'weekly', 'lastmod' => $cat->updated_at->toDateString()]);
     }
 
-    $projects = \App\Models\Project::published()->get(['slug', 'updated_at']);
+    $projects = \App\Models\Project::published()->get(['slug', 'updated_at', 'featured_image']);
     foreach ($projects as $project) {
-        $urls->push(['loc' => route('projects.show', $project->slug), 'priority' => '0.6', 'lastmod' => $project->updated_at->toDateString()]);
+        $entry = [
+            'loc' => route('projects.show', $project->slug),
+            'priority' => '0.6',
+            'changefreq' => 'monthly',
+            'lastmod' => $project->updated_at->toDateString(),
+        ];
+        if ($project->featured_image) {
+            $entry['images'][] = $project->featured_image;
+        }
+        $urls->push($entry);
     }
 
-    $posts = \App\Models\Post::published()->get(['slug', 'updated_at']);
+    $posts = \App\Models\Post::published()->get(['slug', 'updated_at', 'featured_image']);
     foreach ($posts as $post) {
-        $urls->push(['loc' => route('blog.show', $post->slug), 'priority' => '0.6', 'lastmod' => $post->updated_at->toDateString()]);
+        $entry = [
+            'loc' => route('blog.show', $post->slug),
+            'priority' => '0.6',
+            'changefreq' => 'monthly',
+            'lastmod' => $post->updated_at->toDateString(),
+        ];
+        if ($post->featured_image) {
+            $entry['images'][] = $post->featured_image;
+        }
+        $urls->push($entry);
     }
 
-    $tutorialSeries = \App\Models\TutorialSeries::whereHas('tutorials', fn($q) => $q->published())->get();
+    $tutorialSeries = \App\Models\TutorialSeries::whereHas('tutorials', fn($q) => $q->published())->get(['slug', 'updated_at']);
     foreach ($tutorialSeries as $series) {
-        $urls->push(['loc' => route('tutorials.series', $series->slug), 'priority' => '0.5']);
+        $urls->push(['loc' => route('tutorials.series', $series->slug), 'priority' => '0.5', 'changefreq' => 'monthly', 'lastmod' => $series->updated_at->toDateString()]);
     }
 
     $tutorials = \App\Models\Tutorial::published()->get(['slug', 'updated_at']);
     foreach ($tutorials as $tutorial) {
-        $urls->push(['loc' => route('tutorials.show', $tutorial->slug), 'priority' => '0.6', 'lastmod' => $tutorial->updated_at->toDateString()]);
+        $urls->push(['loc' => route('tutorials.show', $tutorial->slug), 'priority' => '0.6', 'changefreq' => 'monthly', 'lastmod' => $tutorial->updated_at->toDateString()]);
     }
 
     return response()->view('sitemap', ['urls' => $urls])->header('Content-Type', 'application/xml');
+});
+
+// Dynamic robots.txt
+Route::get('/robots.txt', function () {
+    return response()->view('robots', status: 200)->header('Content-Type', 'text/plain');
 });
 
 // User profile management
@@ -143,6 +176,34 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
     // Centralized SEO settings
     Route::get('/seo', \App\Livewire\Admin\SeoSettings::class)->name('seo.index');
+
+    // Role management
+    Route::get('/roles', RoleList::class)->name('roles.index');
+    Route::get('/roles/create', RoleForm::class)->name('roles.create');
+    Route::get('/roles/{role}/edit', RoleForm::class)->name('roles.edit');
+
+    // Permission management
+    Route::get('/permissions', PermissionList::class)->name('permissions.index');
+    Route::get('/permissions/create', PermissionForm::class)->name('permissions.create');
+    Route::get('/permissions/{permission}/edit', PermissionForm::class)->name('permissions.edit');
+
+    // Notifications
+    Route::get('/notifications', NotificationList::class)->name('notifications.index');
+
+    // Activity log
+    Route::get('/activity', ActivityLogList::class)->name('activity.index');
+
+    // Redirect manager
+    Route::get('/redirects', \App\Livewire\Admin\RedirectList::class)->name('redirects.index');
+
+    // Webhooks
+    Route::get('/webhooks', \App\Livewire\Admin\WebhookList::class)->name('webhooks.index');
+
+    // Exports
+    Route::get('/exports', \App\Livewire\Admin\ExportManager::class)->name('exports.index');
+
+    // Imports
+    Route::get('/imports', \App\Livewire\Admin\ImportManager::class)->name('imports.index');
 });
 
 // Locale switcher

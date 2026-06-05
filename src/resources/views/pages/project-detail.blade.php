@@ -6,7 +6,16 @@
     <x-meta-tags
         :title="$project->meta_title ?: $project->title"
         :description="$project->meta_description ?: $project->description"
+        :image="$project->featured_image"
     />
+@endsection
+
+@section('schema')
+    <x-schema-org type="Project"
+        :name="$project->meta_title ?: $project->title"
+        :description="$project->meta_description ?: $project->description"
+        :datePublished="$project->created_at->toIso8601String()"
+        :url="route('projects.show', $project->slug)" />
 @endsection
 
 @section('content')

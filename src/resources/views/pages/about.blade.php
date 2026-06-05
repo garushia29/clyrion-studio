@@ -2,6 +2,21 @@
 
 @section('title', __('about.title') . ' | Clyrion Studio | JIMMY')
 
+@section('meta')
+    <x-meta-tags type="profile"
+        :title="__('about.title') . ' | Clyrion Studio | JIMMY'"
+        :description="__('about.bio')"
+        profileFirstName="JIMMY"
+        profileUsername="jimmy"
+    />
+@endsection
+
+@section('schema')
+    <x-schema-org type="Person"
+        description="Software Engineer & Fullstack Developer especializado en arquitecturas backend, automatización de procesos y soluciones empresariales escalables."
+        :url="route('about')" />
+@endsection
+
 @section('content')
 
 <section class="section-padding">

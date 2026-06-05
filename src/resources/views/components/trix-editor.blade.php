@@ -1,6 +1,6 @@
 @props(['wire' => '', 'id' => 'trix-' . Str::random(8), 'value' => '', 'placeholder' => ''])
 
-<div x-data="{
+<div wire:ignore x-data="{
     value: '{{ $value }}',
     init() {
         const editor = this.$refs.trix;

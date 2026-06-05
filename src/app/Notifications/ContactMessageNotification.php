@@ -17,7 +17,7 @@ class ContactMessageNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     public function toMail(object $notifiable): MailMessage
@@ -35,9 +35,12 @@ class ContactMessageNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'contact_message_id' => $this->message->id,
-            'name' => $this->message->name,
-            'email' => $this->message->email,
+            'action' => 'created',
+            'model_type' => 'ContactMessage',
+            'model_id' => $this->message->id,
+            'label' => $this->message->name,
+            'message' => "Nuevo mensaje de contacto de {$this->message->name}",
+            'url' => route('admin.messages.index'),
         ];
     }
 }

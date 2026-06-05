@@ -25,7 +25,7 @@ class PostForm extends AdminComponent
     public string $category = '';
     public string $tags = '';
     public string $status = 'draft';
-    public string $featured_image = '';
+    public ?string $featured_image = '';
     public string $meta_title = '';
     public string $meta_description = '';
 

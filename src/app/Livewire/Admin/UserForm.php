@@ -5,13 +5,8 @@ namespace App\Livewire\Admin;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
-/**
- * Livewire Component: UserForm
- *
- * Formulario de creación y edición de usuarios.
- * Valida que siempre haya al menos un administrador en el sistema.
- */
 class UserForm extends AdminComponent
 {
     public ?User $user = null;
@@ -21,6 +16,7 @@ class UserForm extends AdminComponent
     public string $role = 'user';
     public string $password = '';
     public string $password_confirmation = '';
+    public array $selectedRoles = [];
 
     public function mount(?User $user = null): void
     {
@@ -29,6 +25,7 @@ class UserForm extends AdminComponent
             $this->name = $user->name;
             $this->email = $user->email;
             $this->role = $user->role;
+            $this->selectedRoles = $user->roles->pluck('name')->toArray();
         }
     }
 
@@ -52,10 +49,12 @@ class UserForm extends AdminComponent
                 return;
             }
             $this->user->update($data);
+            $this->user->syncRoles($this->selectedRoles);
             $this->flashSuccess('Usuario actualizado correctamente.');
         } else {
             $data['password'] = Hash::make($this->password);
-            User::create($data);
+            $user = User::create($data);
+            $user->syncRoles($this->selectedRoles);
             $this->flashSuccess('Usuario creado correctamente.');
         }
 
@@ -72,6 +71,7 @@ class UserForm extends AdminComponent
             'name' => 'required|string|max:255',
             'email' => "required|email|max:255|{$uniqueEmail}",
             'role' => 'required|in:user,admin',
+            'selectedRoles' => 'array',
         ];
 
         if ($this->user?->exists) {
@@ -85,6 +85,8 @@ class UserForm extends AdminComponent
 
     protected function view(): View
     {
-        return view('livewire.admin.user-form');
+        return view('livewire.admin.user-form', [
+            'roles' => Role::orderBy('name')->get(),
+        ]);
     }
 }

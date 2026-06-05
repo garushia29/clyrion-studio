@@ -5,19 +5,19 @@
 
     <div class="card p-6 mb-8">
         <form wire:submit="uploadFile" class="space-y-4">
-            <div class="border-2 border-dashed border-surface-border rounded-xl p-8 text-center hover:border-brand-500/50 transition cursor-pointer" x-data="{ dragging: false }" x-on:dragover.prevent="dragging = true" x-on:dragleave.prevent="dragging = false" x-on:drop.prevent="dragging = false; $wire.upload = $event.dataTransfer.files[0]; $wire.uploadFile()">
-                <div x-show="!$wire.upload">
+            <div class="border-2 border-dashed border-surface-border rounded-xl p-8 text-center hover:border-brand-500/50 transition cursor-pointer" x-data="{ dragging: false }" x-on:dragover.prevent="dragging = true" x-on:dragleave.prevent="dragging = false" x-on:drop.prevent="dragging = false; if ($event.dataTransfer?.files?.length) $wire.$upload('upload', $event.dataTransfer.files[0], () => $wire.uploadFile())">
+                <div x-show="!dragging">
                     <svg class="w-12 h-12 mx-auto text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                     </svg>
                     <p class="text-gray-400 text-sm">Arrastra un archivo aquí o</p>
                     <label class="inline-block mt-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 rounded-lg text-sm font-medium cursor-pointer transition">
                         Seleccionar archivo
-                        <input type="file" wire:model="upload" class="hidden" accept="image/*,.pdf,.doc,.docx">
+                        <input type="file" x-on:change="if ($event.target.files.length) $wire.$upload('upload', $event.target.files[0], () => $wire.uploadFile())" class="hidden" accept="image/*,.pdf,.doc,.docx">
                     </label>
                     <p class="text-gray-500 text-xs mt-2">JPEG, PNG, GIF, WebP, SVG, PDF. Máx 10MB</p>
                 </div>
-                <div x-show="$wire.upload" class="text-brand-400">
+                <div wire:loading wire:target="upload" class="text-brand-400">
                     <p class="text-sm">Subiendo...</p>
                 </div>
             </div>

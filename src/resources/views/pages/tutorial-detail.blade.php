@@ -6,7 +6,17 @@
     <x-meta-tags
         :title="$tutorial->meta_title ?: $tutorial->title"
         :description="$tutorial->meta_description ?: $tutorial->excerpt"
+        :image="$tutorial->featured_image"
     />
+@endsection
+
+@section('schema')
+    <x-schema-org type="Tutorial"
+        :name="$tutorial->meta_title ?: $tutorial->title"
+        :description="$tutorial->meta_description ?: $tutorial->excerpt"
+        :datePublished="$tutorial->published_at?->toIso8601String()"
+        :educationalLevel="$tutorial->difficulty"
+        :url="route('tutorials.show', $tutorial->slug)" />
 @endsection
 
 @section('content')

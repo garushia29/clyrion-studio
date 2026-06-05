@@ -3,10 +3,24 @@
 @section('title', ($post->meta_title ?: $post->title) . ' | Clyrion Studio | JIMMY')
 
 @section('meta')
-    <x-meta-tags
+    <x-meta-tags type="article"
         :title="$post->meta_title ?: $post->title"
         :description="$post->meta_description ?: $post->excerpt"
+        :image="$post->featured_image"
+        :articlePublished="$post->published_at?->toIso8601String()"
+        :articleModified="$post->updated_at->toIso8601String()"
+        :articleTags="$post->tagsRelation?->pluck('name')->implode(', ')"
     />
+@endsection
+
+@section('schema')
+    <x-schema-org type="Article"
+        :headline="$post->meta_title ?: $post->title"
+        :description="$post->meta_description ?: $post->excerpt"
+        :image="$post->featured_image"
+        :datePublished="$post->published_at?->toIso8601String()"
+        :dateModified="$post->updated_at->toIso8601String()"
+        :url="route('blog.show', $post->slug)" />
 @endsection
 
 @section('content')
