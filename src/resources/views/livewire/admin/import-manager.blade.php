@@ -1,3 +1,4 @@
+@section('title', 'Importar Datos')
 <div>
     <x-card>
         <x-slot:header>
@@ -55,14 +56,14 @@
                 <h3 class="text-md font-semibold text-white">Importaciones Recientes</h3>
             </x-slot:header>
 
-            <x-table :columns="['Modelo', 'Archivo', 'Filas', 'Procesadas', 'Errores', 'Estado', 'Fecha']">
+            <x-table :columns="[['label' => 'Modelo'], ['label' => 'Archivo', 'class' => 'hidden md:table-cell'], ['label' => 'Filas'], ['label' => 'Procesadas', 'class' => 'hidden md:table-cell'], ['label' => 'Errores'], ['label' => 'Estado'], ['label' => 'Fecha']]">
                 <x-slot:body>
                     @foreach ($recentImports as $import)
                         <tr class="border-b border-surface-border">
                             <td class="px-4 py-3 text-sm text-white">{{ ucfirst($import->model_type) }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-400">{{ $import->file_name }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell">{{ $import->file_name }}</td>
                             <td class="px-4 py-3 text-sm text-gray-400">{{ $import->total_rows }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-400">{{ $import->processed_rows }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell">{{ $import->processed_rows }}</td>
                             <td class="px-4 py-3">
                                 @if ($import->failed_rows > 0)
                                     <button wire:click="viewErrors({{ $import->id }})" class="text-sm text-red-400 hover:text-red-300">{{ $import->failed_rows }} errores</button>
@@ -83,3 +84,4 @@
         </x-card>
     @endif
 </div>
+

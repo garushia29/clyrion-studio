@@ -1,3 +1,4 @@
+@section('title', 'Analytics')
 <div>
     <div class="flex items-start justify-between mb-6">
         <div>

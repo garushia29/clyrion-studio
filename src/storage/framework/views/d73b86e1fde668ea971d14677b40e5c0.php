@@ -1,6 +1,7 @@
 <div>
     <div class="flex items-center justify-between mb-6">
-        <div>
+<?php $__env->startSection('title', 'Usuarios'); ?>
+<div>
             <h1 class="text-2xl font-bold text-white">Usuarios</h1>
             <p class="text-sm text-gray-400 mt-1">Gestiona los usuarios registrados en la plataforma</p>
         </div>
@@ -67,20 +68,20 @@ Nuevo usuario <?php echo $__env->renderComponent(); ?>
 
         <?php if (isset($component)) { $__componentOriginal163c8ba6efb795223894d5ffef5034f5 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal163c8ba6efb795223894d5ffef5034f5 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['headers' => ['Nombre', 'Email', 'Rol', 'Roles', 'Registrado', 'Verificado', '']]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['headers' => [['label' => 'Nombre'], ['label' => 'Email', 'class' => 'hidden md:table-cell'], ['label' => 'Rol'], ['label' => 'Roles', 'class' => 'hidden md:table-cell'], ['label' => 'Registrado'], ['label' => 'Verificado', 'class' => 'hidden md:table-cell'], ['label' => '']]]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('table'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(['Nombre', 'Email', 'Rol', 'Roles', 'Registrado', 'Verificado', ''])]); ?>
+<?php $component->withAttributes(['headers' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([['label' => 'Nombre'], ['label' => 'Email', 'class' => 'hidden md:table-cell'], ['label' => 'Rol'], ['label' => 'Roles', 'class' => 'hidden md:table-cell'], ['label' => 'Registrado'], ['label' => 'Verificado', 'class' => 'hidden md:table-cell'], ['label' => '']])]); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                 <tr class="text-sm text-gray-300 hover:bg-surface-hover/50 transition">
                     <td class="px-4 py-3 font-medium text-white"><?php echo e($user->name); ?></td>
-                    <td class="px-4 py-3"><?php echo e($user->email); ?></td>
+                    <td class="px-4 py-3 hidden md:table-cell"><?php echo e($user->email); ?></td>
                     <td class="px-4 py-3">
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($user->isAdmin()): ?>
                             <?php if (isset($component)) { $__componentOriginal2ddbc40e602c342e508ac696e52f8719 = $component; } ?>
@@ -128,7 +129,7 @@ Usuario <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
-                    <td class="px-4 py-3">
+                    <td class="px-4 py-3 hidden md:table-cell">
                         <div class="flex flex-wrap gap-1">
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_2 = true; $__currentLoopData = $user->roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                                 <?php if (isset($component)) { $__componentOriginal2ddbc40e602c342e508ac696e52f8719 = $component; } ?>
@@ -158,7 +159,7 @@ Usuario <?php echo $__env->renderComponent(); ?>
                         </div>
                     </td>
                     <td class="px-4 py-3 text-gray-400"><?php echo e($user->created_at->format('d/m/Y')); ?></td>
-                    <td class="px-4 py-3">
+                    <td class="px-4 py-3 hidden md:table-cell">
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($user->email_verified_at): ?>
                             <span class="text-green-400">✓</span>
                         <?php else: ?>

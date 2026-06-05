@@ -1,19 +1,20 @@
+<?php $__env->startSection('title', 'Mensajes de Contacto'); ?>
 <div>
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
         <h2 class="text-2xl font-bold text-white">Mensajes de contacto</h2>
     </div>
 
-    <div class="flex gap-4 mb-6">
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
         <?php if (isset($component)) { $__componentOriginal18c21970322f9e5c938bc954620c12bb = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal18c21970322f9e5c938bc954620c12bb = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.text-input','data' => ['wire:model.live' => 'search','placeholder' => 'Buscar mensajes...','class' => 'w-64']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.text-input','data' => ['wire:model.live' => 'search','placeholder' => 'Buscar mensajes...','class' => 'w-full sm:w-64']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('text-input'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['wire:model.live' => 'search','placeholder' => 'Buscar mensajes...','class' => 'w-64']); ?>
+<?php $component->withAttributes(['wire:model.live' => 'search','placeholder' => 'Buscar mensajes...','class' => 'w-full sm:w-64']); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
 <?php echo $__env->renderComponent(); ?>
@@ -106,4 +107,5 @@
 
     </div>
 </div>
+
 <?php /**PATH /var/www/resources/views/livewire/admin/contact-message-list.blade.php ENDPATH**/ ?>

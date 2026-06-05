@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', $category?->exists ? 'Editar Categoría' : 'Nueva Categoría'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white"><?php echo e($category?->exists ? 'Editar categoría' : 'Nueva categoría'); ?></h2>

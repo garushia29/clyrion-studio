@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', $post?->exists ? 'Editar Post' : 'Nuevo Post'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white"><?php echo e($post?->exists ? 'Editar post' : 'Nuevo post'); ?></h2>

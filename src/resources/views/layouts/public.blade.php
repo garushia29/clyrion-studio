@@ -48,6 +48,7 @@
                 <a href="{{ route('home') }}" class="text-xl font-bold tracking-tight text-white">
                     Clyrion <span class="text-brand-500">Studio</span>
                 </a>
+                {{-- Desktop nav --}}
                 <div class="hidden sm:flex items-center space-x-8">
                     <a href="{{ route('home') }}" class="text-sm text-gray-400 hover:text-brand-400 transition">{{ __('nav.home') }}</a>
                     <a href="{{ route('about') }}" class="text-sm text-gray-400 hover:text-brand-400 transition">{{ __('nav.about') }}</a>
@@ -56,7 +57,9 @@
                     <a href="{{ route('tutorials.index') }}" class="text-sm text-gray-400 hover:text-brand-400 transition">{{ __('nav.tutorials') }}</a>
                     <a href="{{ route('home') }}#contacto" class="text-sm text-gray-400 hover:text-brand-400 transition">{{ __('nav.contact') }}</a>
                 </div>
-                <div class="flex items-center gap-3">
+
+                {{-- Right actions + mobile hamburger --}}
+                <div x-data="{ mobileOpen: false }" class="flex items-center gap-3">
                     {{-- Theme toggle --}}
                     <button x-data="{ dark: document.documentElement.classList.contains('dark') }"
                             x-init="$watch('dark', val => { document.documentElement.classList.toggle('dark', val); localStorage.setItem('theme', val ? 'dark' : 'light'); })"
@@ -83,7 +86,35 @@
                         @else
                             <a href="{{ route('login') }}" class="text-sm text-gray-400 hover:text-brand-400 transition">{{ __('nav.login') }}</a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="text-sm px-4 py-2 bg-brand-600 hover:bg-brand-700 rounded-lg transition">{{ __('nav.register') }}</a>
+                                <a href="{{ route('register') }}" class="hidden sm:inline-flex text-sm px-4 py-2 bg-brand-600 hover:bg-brand-700 rounded-lg transition">{{ __('nav.register') }}</a>
+                            @endif
+                        @endauth
+                    @endif
+
+                    {{-- Mobile hamburger --}}
+                    <button @click="mobileOpen = !mobileOpen" class="sm:hidden p-2 rounded-lg text-gray-400 hover:text-white hover:bg-surface-hover transition" aria-label="Menú">
+                        <svg x-show="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                        <svg x-show="mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            {{-- Mobile drawer --}}
+            <div x-show="mobileOpen" x-transition:enter="transition-transform ease-out duration-300" x-transition:enter-start="-translate-y-2 opacity-0" x-transition:enter-end="translate-y-0 opacity-100" x-transition:leave="transition-transform ease-in duration-200" x-transition:leave-start="translate-y-0 opacity-100" x-transition:leave-end="-translate-y-2 opacity-0" class="sm:hidden border-t border-surface-border bg-surface-card" style="display: none;">
+                <div class="px-4 py-4 space-y-2">
+                    <a href="{{ route('home') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.home') }}</a>
+                    <a href="{{ route('about') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.about') }}</a>
+                    <a href="{{ route('projects.index') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.projects') }}</a>
+                    <a href="{{ route('blog.index') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.blog') }}</a>
+                    <a href="{{ route('tutorials.index') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.tutorials') }}</a>
+                    <a href="{{ route('home') }}#contacto" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.contact') }}</a>
+                    @if (Route::has('login'))
+                        @auth
+                            <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-lg text-sm text-brand-400 hover:text-brand-300 hover:bg-surface-hover transition">{{ __('nav.dashboard') }}</a>
+                        @else
+                            <a href="{{ route('login') }}" class="block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-surface-hover transition">{{ __('nav.login') }}</a>
+                            @if (Route::has('register'))
+                                <a href="{{ route('register') }}" class="block px-3 py-2 rounded-lg text-sm text-center bg-brand-600 hover:bg-brand-700 text-white transition">{{ __('nav.register') }}</a>
                             @endif
                         @endauth
                     @endif

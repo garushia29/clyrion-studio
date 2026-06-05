@@ -52,7 +52,7 @@ $breadcrumbs = $breadcrumbMap[$routeName] ?? [];
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Clyrion Studio | JIMMY') }}</title>
+    <title>@yield('title', config('app.name', 'Clyrion Studio | JIMMY'))</title>
 
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {

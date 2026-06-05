@@ -1,11 +1,12 @@
+@section('title', 'Categorías')
 <div>
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
         <h2 class="text-2xl font-bold text-white">Categorías</h2>
         <x-button variant="primary" href="{{ route('admin.categories.create') }}">Nueva categoría</x-button>
     </div>
 
-    <div class="flex gap-4 mb-6">
-        <x-text-input wire:model.live="search" placeholder="Buscar categorías..." class="w-64" />
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <x-text-input wire:model.live="search" placeholder="Buscar categorías..." class="w-full sm:w-64" />
     </div>
 
     <x-table :headers="['Nombre', 'Slug', 'Posts', 'Creada', '']">

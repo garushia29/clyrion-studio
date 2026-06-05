@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', 'Audit Trail'); ?>
 <div>
     <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -41,14 +42,14 @@
 
         <?php if (isset($component)) { $__componentOriginal163c8ba6efb795223894d5ffef5034f5 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal163c8ba6efb795223894d5ffef5034f5 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['columns' => ['Usuario', 'Acción', 'Modelo', 'ID', 'Descripción', 'IP', 'Fecha']]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['columns' => [['label' => 'Usuario'], ['label' => 'Acción'], ['label' => 'Modelo'], ['label' => 'ID', 'class' => 'hidden md:table-cell'], ['label' => 'Descripción'], ['label' => 'IP', 'class' => 'hidden md:table-cell'], ['label' => 'Fecha']]]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('table'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['columns' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(['Usuario', 'Acción', 'Modelo', 'ID', 'Descripción', 'IP', 'Fecha'])]); ?>
+<?php $component->withAttributes(['columns' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([['label' => 'Usuario'], ['label' => 'Acción'], ['label' => 'Modelo'], ['label' => 'ID', 'class' => 'hidden md:table-cell'], ['label' => 'Descripción'], ['label' => 'IP', 'class' => 'hidden md:table-cell'], ['label' => 'Fecha']])]); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
              <?php $__env->slot('body', null, []); ?> 
@@ -67,9 +68,9 @@
                             </span>
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($log->model_type); ?></td>
-                        <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($log->model_id ?? '-'); ?></td>
+                        <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell"><?php echo e($log->model_id ?? '-'); ?></td>
                         <td class="px-4 py-3 text-sm text-gray-400 max-w-xs truncate"><?php echo e($log->description); ?></td>
-                        <td class="px-4 py-3 text-sm text-gray-500"><?php echo e($log->ip_address ?? '-'); ?></td>
+                        <td class="px-4 py-3 text-sm text-gray-500 hidden md:table-cell"><?php echo e($log->ip_address ?? '-'); ?></td>
                         <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($log->created_at->format('d/m/y H:i:s')); ?></td>
                     </tr>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>

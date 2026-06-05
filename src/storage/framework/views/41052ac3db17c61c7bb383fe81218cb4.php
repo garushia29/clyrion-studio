@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', 'Importar Datos'); ?>
 <div>
     <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -115,23 +116,23 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
 
             <?php if (isset($component)) { $__componentOriginal163c8ba6efb795223894d5ffef5034f5 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal163c8ba6efb795223894d5ffef5034f5 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['columns' => ['Modelo', 'Archivo', 'Filas', 'Procesadas', 'Errores', 'Estado', 'Fecha']]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['columns' => [['label' => 'Modelo'], ['label' => 'Archivo', 'class' => 'hidden md:table-cell'], ['label' => 'Filas'], ['label' => 'Procesadas', 'class' => 'hidden md:table-cell'], ['label' => 'Errores'], ['label' => 'Estado'], ['label' => 'Fecha']]]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('table'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['columns' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(['Modelo', 'Archivo', 'Filas', 'Procesadas', 'Errores', 'Estado', 'Fecha'])]); ?>
+<?php $component->withAttributes(['columns' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([['label' => 'Modelo'], ['label' => 'Archivo', 'class' => 'hidden md:table-cell'], ['label' => 'Filas'], ['label' => 'Procesadas', 'class' => 'hidden md:table-cell'], ['label' => 'Errores'], ['label' => 'Estado'], ['label' => 'Fecha']])]); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
                  <?php $__env->slot('body', null, []); ?> 
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $recentImports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $import): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
                         <tr class="border-b border-surface-border">
                             <td class="px-4 py-3 text-sm text-white"><?php echo e(ucfirst($import->model_type)); ?></td>
-                            <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($import->file_name); ?></td>
+                            <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell"><?php echo e($import->file_name); ?></td>
                             <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($import->total_rows); ?></td>
-                            <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($import->processed_rows); ?></td>
+                            <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell"><?php echo e($import->processed_rows); ?></td>
                             <td class="px-4 py-3">
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($import->failed_rows > 0): ?>
                                     <button wire:click="viewErrors(<?php echo e($import->id); ?>)" class="text-sm text-red-400 hover:text-red-300"><?php echo e($import->failed_rows); ?> errores</button>
@@ -171,4 +172,5 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
 <?php endif; ?>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
+
 <?php /**PATH /var/www/resources/views/livewire/admin/import-manager.blade.php ENDPATH**/ ?>

@@ -1,3 +1,4 @@
+@section('title', 'Audit Trail')
 <div>
     <x-card>
         <x-slot:header>
@@ -28,7 +29,7 @@
             </div>
         </x-slot:header>
 
-        <x-table :columns="['Usuario', 'Acción', 'Modelo', 'ID', 'Descripción', 'IP', 'Fecha']">
+        <x-table :columns="[['label' => 'Usuario'], ['label' => 'Acción'], ['label' => 'Modelo'], ['label' => 'ID', 'class' => 'hidden md:table-cell'], ['label' => 'Descripción'], ['label' => 'IP', 'class' => 'hidden md:table-cell'], ['label' => 'Fecha']]">
             <x-slot:body>
                 @forelse ($logs as $log)
                     <tr class="border-b border-surface-border hover:bg-surface-hover/50">
@@ -42,9 +43,9 @@
                             </span>
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-400">{{ $log->model_type }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-400">{{ $log->model_id ?? '-' }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell">{{ $log->model_id ?? '-' }}</td>
                         <td class="px-4 py-3 text-sm text-gray-400 max-w-xs truncate">{{ $log->description }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-500">{{ $log->ip_address ?? '-' }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-500 hidden md:table-cell">{{ $log->ip_address ?? '-' }}</td>
                         <td class="px-4 py-3 text-sm text-gray-400">{{ $log->created_at->format('d/m/y H:i:s') }}</td>
                     </tr>
                 @empty

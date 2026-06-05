@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', $tag?->exists ? 'Editar Tag' : 'Nuevo Tag'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white"><?php echo e($tag?->exists ? 'Editar tag' : 'Nuevo tag'); ?></h2>

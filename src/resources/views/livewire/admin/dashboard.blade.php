@@ -1,3 +1,4 @@
+@section('title', 'Dashboard')
 <div>
     {{-- Stats Grid --}}
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
@@ -140,7 +141,14 @@
                         <span class="text-xs text-gray-600 ml-3">{{ $post->user?->name }}</span>
                     </a>
                 @empty
-                    <p class="text-sm text-gray-500 text-center py-4">No hay posts aún</p>
+                    <div class="text-center py-6">
+                        <svg class="w-10 h-10 mx-auto text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+                        <p class="text-sm text-gray-500 mb-3">No hay posts aún</p>
+                        <a href="{{ route('admin.posts.create') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-400 hover:text-brand-300 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            Crear primer post
+                        </a>
+                    </div>
                 @endforelse
             </div>
         </x-card>
@@ -158,7 +166,11 @@
                         <p class="text-sm text-gray-400 mt-1 line-clamp-2">{{ $message->message }}</p>
                     </div>
                 @empty
-                    <p class="text-sm text-gray-500 text-center py-4">No hay mensajes sin leer</p>
+                    <div class="text-center py-6">
+                        <svg class="w-10 h-10 mx-auto text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <p class="text-sm text-gray-500 mb-3">No hay mensajes sin leer</p>
+                        <p class="text-xs text-gray-600">Los mensajes del formulario de contacto aparecerán aquí</p>
+                    </div>
                 @endforelse
             </div>
         </x-card>

@@ -1,3 +1,4 @@
+@section('title', $category?->exists ? 'Editar Categoría' : 'Nueva Categoría')
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white">{{ $category?->exists ? 'Editar categoría' : 'Nueva categoría' }}</h2>

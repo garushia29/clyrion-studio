@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', 'Webhooks'); ?>
 <div>
     <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>

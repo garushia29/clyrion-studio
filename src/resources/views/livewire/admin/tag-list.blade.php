@@ -1,11 +1,12 @@
+@section('title', 'Tags')
 <div>
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
         <h2 class="text-2xl font-bold text-white">Tags</h2>
         <x-button variant="primary" href="{{ route('admin.tags.create') }}">Nuevo tag</x-button>
     </div>
 
     <div class="flex gap-4 mb-6">
-        <x-text-input wire:model.live="search" placeholder="Buscar tags..." class="w-64" />
+        <x-text-input wire:model.live="search" placeholder="Buscar tags..." class="w-full sm:w-64" />
     </div>
 
     <x-card>
@@ -25,3 +26,4 @@
         {{ $tags->links() }}
     </div>
 </div>
+

@@ -99,6 +99,34 @@
         @apply card hover:border-brand-500/50 transition-colors duration-300;
     }
 
+    .hero-panel {
+        @apply rounded-[2rem] border border-surface-border bg-surface-card/95 shadow-panel backdrop-blur-xl;
+    }
+
+    .stat-card {
+        @apply bg-surface-card border border-surface-border rounded-3xl p-6 shadow-soft;
+    }
+
+    .section-title {
+        @apply text-3xl sm:text-4xl font-semibold text-white;
+    }
+
+    .section-subtitle {
+        @apply mt-4 text-base sm:text-lg leading-8 text-gray-400;
+    }
+
+    .hero-cta {
+        @apply inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold transition;
+    }
+
+    .hero-cta-primary {
+        @apply bg-brand-600 text-white hover:bg-brand-700;
+    }
+
+    .hero-cta-secondary {
+        @apply border border-surface-border text-gray-300 hover:text-white hover:bg-surface-hover;
+    }
+
     .section-padding {
         @apply py-20 sm:py-28;
     }

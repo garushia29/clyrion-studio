@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', 'Exportar Datos'); ?>
 <div>
     <?php if (isset($component)) { $__componentOriginal53747ceb358d30c0105769f8471417f6 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal53747ceb358d30c0105769f8471417f6 = $attributes; } ?>
@@ -104,14 +105,14 @@
 
             <?php if (isset($component)) { $__componentOriginal163c8ba6efb795223894d5ffef5034f5 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal163c8ba6efb795223894d5ffef5034f5 = $attributes; } ?>
-<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['columns' => ['Modelo', 'Formato', 'Archivo', 'Estado', 'Fecha', '']]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.table','data' => ['columns' => [['label' => 'Modelo'], ['label' => 'Formato'], ['label' => 'Archivo', 'class' => 'hidden md:table-cell'], ['label' => 'Estado'], ['label' => 'Fecha'], ['label' => '']]]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('table'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['columns' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(['Modelo', 'Formato', 'Archivo', 'Estado', 'Fecha', ''])]); ?>
+<?php $component->withAttributes(['columns' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([['label' => 'Modelo'], ['label' => 'Formato'], ['label' => 'Archivo', 'class' => 'hidden md:table-cell'], ['label' => 'Estado'], ['label' => 'Fecha'], ['label' => '']])]); ?>
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
                  <?php $__env->slot('body', null, []); ?> 
@@ -119,7 +120,7 @@
                         <tr class="border-b border-surface-border">
                             <td class="px-4 py-3 text-sm text-white"><?php echo e(ucfirst($export->model_type)); ?></td>
                             <td class="px-4 py-3 text-sm text-gray-400 uppercase"><?php echo e($export->file_type); ?></td>
-                            <td class="px-4 py-3 text-sm text-gray-400"><?php echo e($export->file_name); ?></td>
+                            <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell"><?php echo e($export->file_name); ?></td>
                             <td class="px-4 py-3">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <?php echo e($export->status === 'completed' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'); ?>">
                                     <?php echo e($export->status === 'completed' ? 'Completado' : 'Falló'); ?>
@@ -157,4 +158,5 @@
 <?php endif; ?>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
+
 <?php /**PATH /var/www/resources/views/livewire/admin/export-manager.blade.php ENDPATH**/ ?>

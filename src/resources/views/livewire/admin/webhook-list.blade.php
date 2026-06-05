@@ -1,3 +1,4 @@
+@section('title', 'Webhooks')
 <div>
     <x-card>
         <x-slot:header>

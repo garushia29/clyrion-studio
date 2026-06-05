@@ -1,3 +1,4 @@
+@section('title', 'Llamadas de Webhook')
 <div>
     <x-card>
         <x-slot:header>
@@ -9,19 +10,19 @@
             </div>
         </x-slot:header>
 
-        <x-table :columns="['Webhook', 'Evento', 'URL', 'Estado', 'Código', 'Intentos', 'Fecha']">
+        <x-table :columns="[['label' => 'Webhook'], ['label' => 'Evento'], ['label' => 'URL', 'class' => 'hidden md:table-cell'], ['label' => 'Estado'], ['label' => 'Código', 'class' => 'hidden md:table-cell'], ['label' => 'Intentos'], ['label' => 'Fecha']]">
             <x-slot:body>
                 @forelse ($calls as $call)
                     <tr class="border-b border-surface-border hover:bg-surface-hover/50 cursor-pointer" wire:click="showDetail({{ $call->id }})">
                         <td class="px-4 py-3 text-sm text-white">{{ $call->webhook->name }}</td>
                         <td class="px-4 py-3 text-sm text-gray-400">{{ $call->event }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-400 max-w-xs truncate">{{ $call->url }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-400 max-w-xs truncate hidden md:table-cell">{{ $call->url }}</td>
                         <td class="px-4 py-3">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $call->success ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400' }}">
                                 {{ $call->success ? 'Éxito' : 'Falló' }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-sm text-gray-400">{{ $call->status_code ?? '-' }}</td>
+                        <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell">{{ $call->status_code ?? '-' }}</td>
                         <td class="px-4 py-3 text-sm text-gray-400">{{ $call->attempts }}</td>
                         <td class="px-4 py-3 text-sm text-gray-400">{{ $call->created_at->format('d/m/y H:i') }}</td>
                     </tr>
@@ -71,3 +72,4 @@
         </div>
     @endif
 </div>
+

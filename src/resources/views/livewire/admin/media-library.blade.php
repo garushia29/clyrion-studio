@@ -1,3 +1,4 @@
+@section('title', 'Media Library')
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white">Mediateca</h2>

@@ -1,7 +1,7 @@
 @section('title', 'Redirecciones')
 
 <div>
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
         <div>
             <h1 class="text-2xl font-bold text-white">Redirecciones</h1>
             <p class="text-sm text-gray-400 mt-1">Gestiona redirecciones 301/302 para URLs antiguas o rotas</p>
@@ -14,9 +14,9 @@
     </div>
 
     {{-- Búsqueda --}}
-    <div class="mb-4">
+    <div class="flex flex-col sm:flex-row gap-4 mb-4">
         <input type="text" wire:model.live.debounce="search" placeholder="Buscar por URL..."
-               class="w-full max-w-md bg-surface border border-surface-border rounded-lg px-4 py-2 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-500">
+               class="w-full max-w-md sm:max-w-sm bg-surface border border-surface-border rounded-lg px-4 py-2 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-500">
     </div>
 
     {{-- Formulario --}}
@@ -74,14 +74,14 @@
     @endif
 
     {{-- Listado --}}
-    <div class="bg-surface-card rounded-xl border border-surface-border overflow-hidden">
+    <div class="bg-surface-card rounded-xl border border-surface-border overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-surface-border">
                     <th class="text-left px-4 py-3 text-gray-400 font-medium">URL antigua</th>
-                    <th class="text-left px-4 py-3 text-gray-400 font-medium">Destino</th>
+                    <th class="text-left px-4 py-3 text-gray-400 font-medium hidden md:table-cell">Destino</th>
                     <th class="text-center px-4 py-3 text-gray-400 font-medium">Tipo</th>
-                    <th class="text-center px-4 py-3 text-gray-400 font-medium">Accesos</th>
+                    <th class="text-center px-4 py-3 text-gray-400 font-medium hidden md:table-cell">Accesos</th>
                     <th class="text-center px-4 py-3 text-gray-400 font-medium">Activa</th>
                     <th class="text-right px-4 py-3 text-gray-400 font-medium">Acciones</th>
                 </tr>
@@ -90,13 +90,13 @@
                 @forelse ($redirects as $redirect)
                     <tr class="border-b border-surface-border hover:bg-surface-hover transition">
                         <td class="px-4 py-3 text-gray-200 max-w-xs truncate">/{{ $redirect->old_url }}</td>
-                        <td class="px-4 py-3 text-gray-400 max-w-xs truncate">{{ $redirect->new_url }}</td>
+                        <td class="px-4 py-3 text-gray-400 max-w-xs truncate hidden md:table-cell">{{ $redirect->new_url }}</td>
                         <td class="px-4 py-3 text-center">
                             <span class="text-xs px-2 py-0.5 rounded-full {{ $redirect->status_code === 301 ? 'text-amber-400 bg-amber-500/10' : 'text-blue-400 bg-blue-500/10' }}">
                                 {{ $redirect->status_code }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-center text-gray-400">{{ $redirect->hits }}</td>
+                        <td class="px-4 py-3 text-center text-gray-400 hidden md:table-cell">{{ $redirect->hits }}</td>
                         <td class="px-4 py-3 text-center">
                             <button wire:click="toggleActive({{ $redirect->id }})"
                                     class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full transition

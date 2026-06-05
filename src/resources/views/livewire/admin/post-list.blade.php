@@ -1,11 +1,12 @@
+@section('title', 'Blog Posts')
 <div>
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
         <h2 class="text-2xl font-bold text-white">Blog Posts</h2>
         <x-button variant="primary" href="{{ route('admin.posts.create') }}">Nuevo post</x-button>
     </div>
 
-    <div class="flex gap-4 mb-6">
-        <x-text-input wire:model.live="search" placeholder="Buscar posts..." class="w-64" />
+    <div class="flex flex-col sm:flex-row gap-4 mb-6">
+        <x-text-input wire:model.live="search" placeholder="Buscar posts..." class="w-full sm:w-64" />
         <select wire:model.live="status" class="border-surface-input bg-surface-card text-gray-200 focus:border-brand-500 focus:ring-brand-500 rounded-md shadow-sm text-sm">
             <option value="">Todos</option>
             <option value="published">Publicados</option>

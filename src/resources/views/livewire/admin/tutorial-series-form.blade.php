@@ -1,3 +1,4 @@
+@section('title', $series?->exists ? 'Editar Serie' : 'Nueva Serie')
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white">{{ $series?->exists ? 'Editar serie' : 'Nueva serie' }}</h2>

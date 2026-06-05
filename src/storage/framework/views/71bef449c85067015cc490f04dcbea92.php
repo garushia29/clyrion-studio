@@ -1,6 +1,7 @@
 <div>
     <div class="flex items-center justify-between mb-6">
-        <div>
+<?php $__env->startSection('title', 'Servicios'); ?>
+<div>
             <h1 class="text-2xl font-bold text-white">Servicios</h1>
             <p class="text-sm text-gray-400 mt-1">Gestiona los servicios que se muestran en la página principal</p>
         </div>

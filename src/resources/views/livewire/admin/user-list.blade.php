@@ -1,6 +1,7 @@
 <div>
     <div class="flex items-center justify-between mb-6">
-        <div>
+@section('title', 'Usuarios')
+<div>
             <h1 class="text-2xl font-bold text-white">Usuarios</h1>
             <p class="text-sm text-gray-400 mt-1">Gestiona los usuarios registrados en la plataforma</p>
         </div>
@@ -13,11 +14,11 @@
             <x-text-input wire:model.live="search" placeholder="Buscar por nombre o email..." class="w-64" />
         </x-slot:action>
 
-        <x-table :headers="['Nombre', 'Email', 'Rol', 'Roles', 'Registrado', 'Verificado', '']">
+        <x-table :headers="[['label' => 'Nombre'], ['label' => 'Email', 'class' => 'hidden md:table-cell'], ['label' => 'Rol'], ['label' => 'Roles', 'class' => 'hidden md:table-cell'], ['label' => 'Registrado'], ['label' => 'Verificado', 'class' => 'hidden md:table-cell'], ['label' => '']]">
             @forelse ($users as $user)
                 <tr class="text-sm text-gray-300 hover:bg-surface-hover/50 transition">
                     <td class="px-4 py-3 font-medium text-white">{{ $user->name }}</td>
-                    <td class="px-4 py-3">{{ $user->email }}</td>
+                    <td class="px-4 py-3 hidden md:table-cell">{{ $user->email }}</td>
                     <td class="px-4 py-3">
                         @if($user->isAdmin())
                             <x-badge variant="brand">Admin</x-badge>
@@ -25,7 +26,7 @@
                             <x-badge variant="neutral">Usuario</x-badge>
                         @endif
                     </td>
-                    <td class="px-4 py-3">
+                    <td class="px-4 py-3 hidden md:table-cell">
                         <div class="flex flex-wrap gap-1">
                             @forelse ($user->roles as $role)
                                 <x-badge variant="neutral" size="sm">{{ $role->name }}</x-badge>
@@ -35,7 +36,7 @@
                         </div>
                     </td>
                     <td class="px-4 py-3 text-gray-400">{{ $user->created_at->format('d/m/Y') }}</td>
-                    <td class="px-4 py-3">
+                    <td class="px-4 py-3 hidden md:table-cell">
                         @if($user->email_verified_at)
                             <span class="text-green-400">✓</span>
                         @else

@@ -11,8 +11,10 @@
                 <thead class="bg-surface border-b border-surface-border">
                     <tr>
                         @foreach ($headerList as $header)
-                            <th class="text-left py-3 px-4 text-gray-400 font-medium text-xs uppercase tracking-wider">
-                                {{ $header }}
+                            @php($thClass = is_array($header) ? ($header['class'] ?? '') : '')
+                            @php($label = is_array($header) ? ($header['label'] ?? '') : $header)
+                            <th class="text-left py-3 px-4 text-gray-400 font-medium text-xs uppercase tracking-wider {{ $thClass }}">
+                                {{ $label }}
                             </th>
                         @endforeach
                     </tr>

@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', $series?->exists ? 'Editar Serie' : 'Nueva Serie'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white"><?php echo e($series?->exists ? 'Editar serie' : 'Nueva serie'); ?></h2>

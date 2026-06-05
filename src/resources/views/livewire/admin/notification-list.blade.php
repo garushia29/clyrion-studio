@@ -27,7 +27,8 @@
                 <div class="w-2 h-2 rounded-full mt-1.5 shrink-0 {{ $notification->read_at ? 'bg-gray-600' : 'bg-brand-500' }}"></div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-start justify-between gap-4">
-                        <div>
+@section('title', 'Notificaciones')
+<div>
                             <p class="text-sm text-white {{ $notification->read_at ? '' : 'font-medium' }}">{{ $notification->data['message'] ?? 'Notificación' }}</p>
                             <div class="flex items-center gap-2 mt-1">
                                 <span class="text-xs text-gray-500">{{ $notification->created_at->format('d/m/Y H:i') }}</span>

@@ -1,3 +1,4 @@
+@section('title', $project?->exists ? 'Editar Proyecto' : 'Nuevo Proyecto')
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white">{{ $project?->exists ? 'Editar proyecto' : 'Nuevo proyecto' }}</h2>

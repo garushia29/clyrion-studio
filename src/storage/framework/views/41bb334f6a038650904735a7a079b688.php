@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', $tutorial?->exists ? 'Editar Tutorial' : 'Nuevo Tutorial'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white"><?php echo e($tutorial?->exists ? 'Editar tutorial' : 'Nuevo tutorial'); ?></h2>

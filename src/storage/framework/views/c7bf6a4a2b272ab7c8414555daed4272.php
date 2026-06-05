@@ -42,8 +42,10 @@ unset($__defined_vars, $__key, $__value); ?>
                 <thead class="bg-surface border-b border-surface-border">
                     <tr>
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $headerList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $header): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoopIteration(); ?><?php endif; ?>
-                            <th class="text-left py-3 px-4 text-gray-400 font-medium text-xs uppercase tracking-wider">
-                                <?php echo e($header); ?>
+                            <?php ($thClass = is_array($header) ? ($header['class'] ?? '') : ''); ?>
+                            <?php ($label = is_array($header) ? ($header['label'] ?? '') : $header); ?>
+                            <th class="text-left py-3 px-4 text-gray-400 font-medium text-xs uppercase tracking-wider <?php echo e($thClass); ?>">
+                                <?php echo e($label); ?>
 
                             </th>
                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>

@@ -38,6 +38,14 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
+            boxShadow: {
+                panel: '0 25px 80px rgba(15, 23, 42, 0.18)',
+                soft: '0 16px 48px rgba(15, 23, 42, 0.12)',
+            },
+            backgroundImage: {
+                'hero-gradient': 'radial-gradient(circle at top, rgba(59,130,246,0.14), transparent 45%)',
+                'surface-glow': 'linear-gradient(180deg, rgba(59,130,246,0.08), transparent 60%)',
+            },
             animation: {
                 'fade-in': 'fadeIn 0.5s ease-in-out',
                 'slide-up': 'slideUp 0.5s ease-out',

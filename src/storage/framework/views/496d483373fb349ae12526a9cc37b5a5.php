@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', 'Bloques de Contenido'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white">Bloques de contenido</h2>

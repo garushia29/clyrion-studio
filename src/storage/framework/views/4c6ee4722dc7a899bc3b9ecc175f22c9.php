@@ -1,3 +1,4 @@
+<?php $__env->startSection('title', $project?->exists ? 'Editar Proyecto' : 'Nuevo Proyecto'); ?>
 <div>
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white"><?php echo e($project?->exists ? 'Editar proyecto' : 'Nuevo proyecto'); ?></h2>

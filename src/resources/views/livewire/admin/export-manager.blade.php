@@ -1,3 +1,4 @@
+@section('title', 'Exportar Datos')
 <div>
     <x-card>
         <x-slot:header>
@@ -51,13 +52,13 @@
                 <h3 class="text-md font-semibold text-white">Exportaciones Recientes</h3>
             </x-slot:header>
 
-            <x-table :columns="['Modelo', 'Formato', 'Archivo', 'Estado', 'Fecha', '']">
+            <x-table :columns="[['label' => 'Modelo'], ['label' => 'Formato'], ['label' => 'Archivo', 'class' => 'hidden md:table-cell'], ['label' => 'Estado'], ['label' => 'Fecha'], ['label' => '']]">
                 <x-slot:body>
                     @foreach ($recentExports as $export)
                         <tr class="border-b border-surface-border">
                             <td class="px-4 py-3 text-sm text-white">{{ ucfirst($export->model_type) }}</td>
                             <td class="px-4 py-3 text-sm text-gray-400 uppercase">{{ $export->file_type }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-400">{{ $export->file_name }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-400 hidden md:table-cell">{{ $export->file_name }}</td>
                             <td class="px-4 py-3">
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $export->status === 'completed' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400' }}">
                                     {{ $export->status === 'completed' ? 'Completado' : 'Falló' }}
@@ -76,3 +77,4 @@
         </x-card>
     @endif
 </div>
+
