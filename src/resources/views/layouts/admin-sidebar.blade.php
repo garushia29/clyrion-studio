@@ -71,12 +71,12 @@ $navItems = [
     {{-- Brand --}}
     <div class="h-16 flex items-center border-b border-surface-border px-4 {{ $collapsed ? 'justify-center' : 'justify-between' }}">
         <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2 {{ $collapsed ? '' : '' }}">
-            <span class="text-lg font-bold tracking-tight text-white">
+             <span class="text-lg font-bold tracking-tight text-white">
                 <span class="text-brand-500">C</span>
             </span>
             <span x-show="!collapsed" class="text-sm font-medium text-gray-400 truncate">Clyrion Admin</span>
         </a>
-        <button @click="collapsed = !collapsed" x-show="!collapsed" class="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-surface-hover transition">
+        <button @click="collapsed = !collapsed" class="p-1.5 rounded-lg text-gray-500 hover:text-white hover:bg-surface-hover transition">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
             </svg>
@@ -100,7 +100,7 @@ $navItems = [
                         @foreach ($item['children'] as $child)
                             <a href="{{ route($child['route']) }}"
                                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition group {{ $isActive($child['pattern']) ? 'bg-brand-500/10 text-brand-400' : 'text-gray-400 hover:text-white hover:bg-surface-hover' }}">
-                                <span class="shrink-0">{{ $child['icon'] }}</span>
+                                <span class="shrink-0">{!! $child['icon'] !!}</span>
                                 <span>{{ $child['label'] }}</span>
                             </a>
                         @endforeach
