@@ -22,5 +22,8 @@ RUN groupadd -g 1000 www && \
 
 RUN chown -R www:www /var/www && \
     mkdir -p /var/log/php-fpm && \
-    chown www:www /var/log/php-fpm
+    chown www:www /var/log/php-fpm && \
+    mkdir -p /var/www/storage/app/public && \
+    ln -sf /var/www/storage/app/public /var/www/public/storage || true
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY docker/php/php.ini /usr/local/etc/php/conf.d/custom.ini

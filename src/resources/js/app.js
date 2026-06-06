@@ -1,6 +1,10 @@
 import './bootstrap';
+import Alpine from 'alpinejs';
 import Trix from 'trix';
 import { lineChart, barChart } from './charts';
+
+window.Alpine = Alpine;
+Alpine.start();
 
 window.lineChart = lineChart;
 window.barChart = barChart;

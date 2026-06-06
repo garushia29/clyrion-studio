@@ -20,10 +20,16 @@ class FlashMessage extends Component
 
     protected $listeners = ['flash' => 'show'];
 
-    public function show($data): void
+    public function show($data = 'success', ?string $message = null): void
     {
-        $this->type = $data['type'] ?? 'success';
-        $this->message = $data['message'] ?? '';
+        if (is_array($data)) {
+            $this->type = $data['type'] ?? 'success';
+            $this->message = $data['message'] ?? '';
+        } else {
+            $this->type = $data ?: 'success';
+            $this->message = $message ?? '';
+        }
+
         $this->visible = true;
 
         $this->dispatch('flash-shown');

@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\ModelActivity;
 use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Database\Eloquent\Model;
 
 class LogModelActivity
 {
