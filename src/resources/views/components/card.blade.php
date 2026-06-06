@@ -25,7 +25,7 @@ if ($hover) {
                 @endif
             </div>
             @if ($action)
-                <div class="ml-4 shrink-0">{{ !! $action !!}}</div>
+                <div class="ml-4 shrink-0">{!! $action !!}</div>
             @endif
         </div>
     @endif
